@@ -8,6 +8,7 @@ import knex from './db';
 import * as utils from './utils';
 import { ERRORS, LogicError } from './errors';
 
+import parseQueryString from './middlewares/parseQueryString';
 import participationsValidator from './validators/participations';
 import participationsController from './controllers/participations';
 
@@ -56,6 +57,12 @@ app.post(
   '/db/v2/participations/delete',
   participationsValidator.deleteParticipation,
   participationsController.deleteParticipation
+);
+app.get(
+  '/db/v2/participations',
+  parseQueryString,
+  participationsValidator.readParticipation,
+  participationsController.readParticipation
 );
 
 app.use(
