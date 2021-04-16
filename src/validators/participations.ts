@@ -6,7 +6,7 @@ const createParticipation = [body('values').isArray(), validationMiddleware];
 const readParticipation = [
   body('offset').isInt({ min: 0 }),
   body('limit').isInt({ min: 0 }),
-  body('where').isObject(),
+  body('where').isObject().optional(),
   validationMiddleware
 ];
 
