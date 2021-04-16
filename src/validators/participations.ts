@@ -10,7 +10,11 @@ const readParticipation = [
   validationMiddleware
 ];
 
-const updateParticipation = [validationMiddleware];
+const updateParticipation = [
+  body('where').isArray(),
+  body('values').isArray(),
+  validationMiddleware
+];
 
 const deleteParticipation = [body('where').isArray(), validationMiddleware];
 
