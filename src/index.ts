@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import Express from 'express';
-import { Request, Response, NextFunction } from 'express';
+import express from 'express';
+import cors from 'cors';
 
 import knex from './db';
 import * as utils from './utils';
@@ -11,18 +11,23 @@ import { ERRORS, LogicError } from './errors';
 import participationsValidator from './validators/participations';
 import participationsController from './controllers/participations';
 
-const app = Express();
+const app = express();
 const port = 3000;
+
+app.set('json spaces', 2); // optional, format json responses with 2 spaces
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.get('/db/v2/timestamp', (req: Express.Request, res: Express.Response) => {
+app.get('/db/v2/timestamp', (req: express.Request, res: express.Response) => {
   res.json({ timestamp: utils.getCurrentTimestamp() });
 });
 
-app.get('/db/v2/contests', (req: Express.Request, res: Express.Response) => {
+app.get('/db/v2/contests', (req: express.Request, res: express.Response) => {
   knex
     .select('*')
     .from('Contests')
@@ -53,16 +58,23 @@ app.post(
   participationsController.deleteParticipation
 );
 
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(error);
-  if (error instanceof LogicError) {
-    res.status(400).json(error);
-  } else {
-    res.status(500).json({
-      ...ERRORS.SERVER_ERROR
-    });
+app.use(
+  (
+    error: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error(error);
+    if (error instanceof LogicError) {
+      res.status(400).json(error);
+    } else {
+      res.status(500).json({
+        ...ERRORS.SERVER_ERROR
+      });
+    }
   }
-});
+);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

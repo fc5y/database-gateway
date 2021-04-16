@@ -3,7 +3,12 @@ import { validationMiddleware } from './common';
 
 const createParticipation = [validationMiddleware];
 
-const readParticipation = [validationMiddleware];
+const readParticipation = [
+  body('offset').isInt({ min: 0 }),
+  body('limit').isInt({ min: 0 }),
+  body('where').isArray().optional(),
+  validationMiddleware
+];
 
 const updateParticipation = [validationMiddleware];
 
