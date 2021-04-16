@@ -7,7 +7,16 @@ const createParticipation = async (
   res: Response,
   next: NextFunction
 ) => {
-  res.send('Not implemented');
+  try {
+    const { values } = req.body as RequestBodySchema;
+    await knex('Participations').insert(values);
+
+    res.json({
+      error: 0
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 const readParticipation = async (
@@ -19,9 +28,8 @@ const readParticipation = async (
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || [];
 
-    const items = await knex
+    const items = await knex('Participations')
       .select('*')
-      .from('Participations')
       .where(where)
       .offset(offset)
       .limit(limit);

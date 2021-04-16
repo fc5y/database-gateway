@@ -1,7 +1,7 @@
 import { body, param, query } from 'express-validator';
 import { validationMiddleware } from './common';
 
-const createParticipation = [validationMiddleware];
+const createParticipation = [body('values').isArray(), validationMiddleware];
 
 const readParticipation = [
   body('offset').isInt({ min: 0 }),
