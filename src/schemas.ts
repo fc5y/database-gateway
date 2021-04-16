@@ -1,8 +1,8 @@
 export interface RequestBodySchema {
   offset: number;
   limit: number;
-  where?: Array<Object>;
-  values?: Array<Object>;
+  where: Array<Object>;
+  values: Array<Object>;
 }
 
 export interface ResponseBodySchema {

@@ -12,7 +12,7 @@ const readParticipation = [
 
 const updateParticipation = [validationMiddleware];
 
-const deleteParticipation = [validationMiddleware];
+const deleteParticipation = [body('where').isArray(), validationMiddleware];
 
 export default {
   createParticipation,

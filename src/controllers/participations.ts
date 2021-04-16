@@ -25,14 +25,19 @@ const readParticipation = async (
   next: NextFunction
 ) => {
   try {
-    const { offset, limit } = req.body as RequestBodySchema;
-    const where = req.body?.where || [];
+    const { offset, limit, where } = req.body as RequestBodySchema;
 
-    const items = await knex('Participations')
+    const query = knex('Participations')
       .select('*')
-      .where(where)
       .offset(offset)
       .limit(limit);
+    if (Array.isArray(where)) {
+      for (const condition of where) {
+        query.where(condition);
+      }
+    }
+
+    const items = await query;
 
     res.json({
       error: 0,
@@ -59,7 +64,24 @@ const deleteParticipation = async (
   res: Response,
   next: NextFunction
 ) => {
-  res.send('Not implemented');
+  try {
+    const { where } = req.body as RequestBodySchema;
+
+    const query = knex('Participations');
+    if (Array.isArray(where)) {
+      for (const condition of where) {
+        query.where(condition);
+      }
+    }
+
+    await query.del();
+
+    res.json({
+      error: 0
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default {
