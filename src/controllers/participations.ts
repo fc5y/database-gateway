@@ -26,18 +26,11 @@ const readParticipation = async (
 ) => {
   try {
     const { offset, limit, where } = req.body as RequestBodySchema;
-
-    const query = knex('Participations')
+    const items = await knex('Participations')
       .select('*')
+      .where(where)
       .offset(offset)
       .limit(limit);
-    if (Array.isArray(where)) {
-      for (const condition of where) {
-        query.where(condition);
-      }
-    }
-
-    const items = await query;
 
     res.json({
       error: 0,
@@ -58,19 +51,12 @@ const updateParticipation = async (
 ) => {
   try {
     const { where, values } = req.body as RequestBodySchema;
-
-    const query = knex('Participations');
-    if (Array.isArray(where)) {
-      for (const condition of where) {
-        query.where(condition);
-      }
-    }
+    const query = knex('Participations').where(where);
     if (Array.isArray(values)) {
       for (const value of values) {
         query.update(value);
       }
     }
-
     await query;
 
     res.json({
@@ -88,15 +74,7 @@ const deleteParticipation = async (
 ) => {
   try {
     const { where } = req.body as RequestBodySchema;
-
-    const query = knex('Participations').del();
-    if (Array.isArray(where)) {
-      for (const condition of where) {
-        query.where(condition);
-      }
-    }
-
-    await query;
+    await knex('Participations').where(where).del();
 
     res.json({
       error: 0
