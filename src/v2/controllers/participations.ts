@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { RequestBodySchema } from '../schemas';
-import knex from '../db';
+import knex from '../../db';
 
 const createParticipation = async (
   req: Request,
