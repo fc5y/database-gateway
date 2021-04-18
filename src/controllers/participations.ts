@@ -26,7 +26,7 @@ const readParticipation = async (
 ) => {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
-    const where = req.body?.where ?? {};
+    const where = req.body?.where || {};
     const items = await knex('Participations')
       .select('*')
       .where(where)
