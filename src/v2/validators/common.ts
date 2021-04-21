@@ -12,19 +12,6 @@ const isArrayOfObjects: CustomValidator = (value: any) => {
   return true;
 };
 
-const createFieldsValidator = (fields: Array<string>) => {
-  const containsOnlyFields: CustomValidator = (value: any) => {
-    if (typeof value !== 'object') {
-      throw new Error('Not an object');
-    }
-    if (!Object.keys(value).every((item) => fields.includes(item))) {
-      throw new Error('Object contains unknown field');
-    }
-    return true;
-  };
-  return containsOnlyFields;
-};
-
 function validationMiddleware(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -34,4 +21,4 @@ function validationMiddleware(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { isArrayOfObjects, createFieldsValidator, validationMiddleware };
+export { isArrayOfObjects, validationMiddleware };
