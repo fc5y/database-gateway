@@ -11,7 +11,11 @@ import participationsController from './controllers/participations';
 const router = express.Router();
 
 router.get('/timestamp', (req: express.Request, res: express.Response) => {
-  res.json({ timestamp: utils.getCurrentTimestamp() });
+  res.json({
+    data: { timestamp: utils.getCurrentTimestamp() },
+    error: 0,
+    error_msg: ''
+  });
 });
 
 router.get('/contests', (req: express.Request, res: express.Response) => {
