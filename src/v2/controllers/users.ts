@@ -17,7 +17,7 @@ async function readUser(req: express.Request, res: express.Response, next: expre
     try {
         const {offset, limit} = req.body as RequestBodySchema
         const where = req.body?.where || {}
-        const values = await knex('Users').select('*').offset(offset).limit(limit)
+        const values = await knex('Users').select('*').where(where).offset(offset).limit(limit)
         res.json({
             error: 0,
             data: {
