@@ -8,6 +8,9 @@ import parseQueryString from './middlewares/parseQueryString';
 import participationsValidator from './validators/participations';
 import participationsController from './controllers/participations';
 
+import usersController from './controllers/users';
+import usersValidators from './validators/users';
+
 const router = express.Router();
 
 router.get('/timestamp', (req: express.Request, res: express.Response) => {
@@ -54,6 +57,13 @@ router.get(
   participationsValidator.readParticipation,
   participationsController.readParticipation
 );
+
+//Users
+router.post('/users/create', usersValidators.createUser, usersController.createUser)
+router.post('/users/read', usersValidators.readUser, usersController.readUser)
+router.post('/users/update', usersValidators.updateUser, usersController.updateUser)
+router.post('/users/delete', usersValidators.deleteUser, usersController.deleteUser)
+router.get('/users', parseQueryString, usersValidators.readUser, usersController.readUser)
 
 router.use(
   (
