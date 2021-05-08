@@ -18,10 +18,11 @@ async function readUser(req: express.Request, res: express.Response, next: expre
         const {offset, limit} = req.body as RequestBodySchema
         const where = req.body?.where || {}
         const values = await knex('Users').select('*').where(where).offset(offset).limit(limit)
+        const total = await knex('Users').count('*')
         res.json({
             error: 0,
             data: {
-                total: values.length,
+                total: total[0]["count(*)"],
                 values
             }
         })
@@ -34,10 +35,13 @@ async function readUser(req: express.Request, res: express.Response, next: expre
 async function updateUser(req: express.Request, res: express.Response, next: express.NextFunction) {
     try {
         const {where, values} = req.body as RequestBodySchema
+        const query = knex('User').where(where)
         if (Array.isArray(values)) {
-            for (let value in values)
-                await knex('Users').where(where).update(value);
+            for (let value of values) {
+                query.update(value)
+            }
         }
+        await query
         res.json({error: 0})
     }
     catch(err) {
