@@ -33,11 +33,11 @@ const readContest = async (
             .where(where)
             .offset(offset)
             .limit(limit);
-
+        const total = await knex("Contests").count("*");
         res.json({
             error: 0,
             data: {
-                total: items.length,
+                total: total[0]["count(*)"],
                 items
             }
         });
