@@ -1,7 +1,7 @@
 import { body } from 'express-validator';
-import { isArrayOfObjects, validationMiddleware } from './common';
+import { validationMiddleware } from './common';
 
-const createParticipation = [body('values').isArray(), validationMiddleware];
+const createParticipation = [body('values').isObject(), validationMiddleware];
 
 const readParticipation = [
   body('offset').isInt({ min: 0 }),
@@ -12,7 +12,7 @@ const readParticipation = [
 
 const updateParticipation = [
   body('where').isObject(),
-  body('values').custom(isArrayOfObjects),
+  body('values').isObject(),
   validationMiddleware
 ];
 

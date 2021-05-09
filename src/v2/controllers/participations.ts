@@ -50,13 +50,7 @@ const updateParticipation = async (
 ) => {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    const query = knex('Participations').where(where);
-    if (Array.isArray(values)) {
-      for (const value of values) {
-        query.update(value);
-      }
-    }
-    await query;
+    await knex('Participations').where(where).update(values);
 
     res.json({
       error: 0

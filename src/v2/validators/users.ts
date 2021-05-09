@@ -1,7 +1,7 @@
 import { body } from "express-validator";
-import { isArrayOfObjects, validationMiddleware } from "./common";
+import { validationMiddleware } from "./common";
 
-const createUser = [body("values").isArray(), validationMiddleware];
+const createUser = [body("values").isObject(), validationMiddleware];
 
 const readUser = [
   body("offset").isInt({ min: 0 }),
@@ -12,7 +12,7 @@ const readUser = [
 
 const updateUser = [
   body("where").isObject(),
-  body("values").custom(isArrayOfObjects),
+  body("values").isObject(),
   validationMiddleware,
 ];
 
