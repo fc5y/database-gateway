@@ -49,13 +49,8 @@ async function updateUser(
 ) {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    const query = knex("User").where(where);
-    if (Array.isArray(values)) {
-      for (let value of values) {
-        query.update(value);
-      }
-    }
-    await query;
+    await knex("User").where(where).update(values);
+
     res.json({ error: 0 });
   } catch (err) {
     next(err);

@@ -27,16 +27,14 @@ const readParticipation = async (
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const items = await knex('Participations')
-      .select('*')
-      .where(where)
-      .offset(offset)
-      .limit(limit);
+    const query = knex('Participations').where(where);
+    const total = await query.clone().count('*', { as: 'count' }).first();
+    const items = await query.clone().select('*').offset(offset).limit(limit);
 
     res.json({
       error: 0,
       data: {
-        total: items.length,
+        total: total?.count,
         items
       }
     });
@@ -52,13 +50,7 @@ const updateParticipation = async (
 ) => {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    const query = knex('Participations').where(where);
-    if (Array.isArray(values)) {
-      for (const value of values) {
-        query.update(value);
-      }
-    }
-    await query;
+    await knex('Participations').where(where).update(values);
 
     res.json({
       error: 0
