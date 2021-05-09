@@ -11,6 +11,9 @@ import participationsController from './controllers/participations';
 import usersController from './controllers/users';
 import usersValidators from './validators/users';
 
+import contestsValidator from "./validators/contests";
+import contestsController from "./controllers/contests";
+
 const router = express.Router();
 
 router.get('/timestamp', (req: express.Request, res: express.Response) => {
@@ -64,6 +67,34 @@ router.post('/users/read', usersValidators.readUser, usersController.readUser)
 router.post('/users/update', usersValidators.updateUser, usersController.updateUser)
 router.post('/users/delete', usersValidators.deleteUser, usersController.deleteUser)
 router.get('/users', parseQueryString, usersValidators.readUser, usersController.readUser)
+
+// Contests
+router.post(
+  '/contests/create',
+  contestsValidator.createContest,
+  contestsController.createContest
+);
+router.post(
+  '/contests/read',
+  contestsValidator.readContest,
+  contestsController.readContest
+)
+router.post(
+  '/contests/delete',
+  contestsValidator.deleteContest,
+  contestsController.deleteContest
+)
+router.post(
+  '/contest/update',
+  contestsValidator.updateContest,
+  contestsController.updateContest
+)
+router.get(
+  '/contests',
+  parseQueryString,
+  contestsValidator.readContest,
+  contestsController.readContest
+)
 
 router.use(
   (
