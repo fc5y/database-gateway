@@ -29,7 +29,7 @@ async function readEmailVerification(
       .where(where)
       .offset(offset)
       .limit(limit);
-    const total = await knex("EmailVerification").count("*");
+    const total = await knex("EmailVerifications").count("*");
     res.json({
       error: 0,
       data: {
