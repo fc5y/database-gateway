@@ -41,7 +41,7 @@ const readUser = async (req: Request, res: Response, next: NextFunction): Promis
 const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    await knex('User').where(where).update(values);
+    await knex('Users').where(where).update(values);
 
     res.json({
       error: 0,
