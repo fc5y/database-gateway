@@ -1,23 +1,27 @@
-import express from 'express';
-import knex from '../../db';
+import { Request, Response, NextFunction } from 'express';
 import { RequestBodySchema } from '../schemas';
+import knex from '../../db';
 
-async function createUser(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { values } = req.body as RequestBodySchema;
     await knex('Users').insert(values);
-    res.json({ error: 0 });
+
+    res.json({
+      error: 0,
+    });
   } catch (err) {
     next(err);
   }
-}
+};
 
-async function readUser(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+const readUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
     const values = await knex('Users').select('*').where(where).offset(offset).limit(limit);
     const total = await knex('Users').count('*');
+
     res.json({
       error: 0,
       data: {
@@ -28,28 +32,33 @@ async function readUser(req: express.Request, res: express.Response, next: expre
   } catch (err) {
     next(err);
   }
-}
+};
 
-async function updateUser(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = req.body as RequestBodySchema;
     await knex('User').where(where).update(values);
 
-    res.json({ error: 0 });
+    res.json({
+      error: 0,
+    });
   } catch (err) {
     next(err);
   }
-}
+};
 
-async function deleteUser(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where } = req.body as RequestBodySchema;
     await knex('Users').where(where).del();
-    res.json({ error: 0 });
+
+    res.json({
+      error: 0,
+    });
   } catch (err) {
     next(err);
   }
-}
+};
 
 export default {
   createUser,

@@ -74,8 +74,8 @@ router.get('/users', parseQueryString, usersValidators.readUser, usersController
 // Contests
 router.post('/contests/create', contestsValidator.createContest, contestsController.createContest);
 router.post('/contests/read', contestsValidator.readContest, contestsController.readContest);
-router.post('/contests/delete', contestsValidator.deleteContest, contestsController.deleteContest);
 router.post('/contests/update', contestsValidator.updateContest, contestsController.updateContest);
+router.post('/contests/delete', contestsValidator.deleteContest, contestsController.deleteContest);
 router.get('/contests', parseQueryString, contestsValidator.readContest, contestsController.readContest);
 
 // Email Verifications
