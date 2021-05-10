@@ -102,7 +102,7 @@ router.post(
   contestsController.deleteContest
 );
 router.post(
-  "/contest/update",
+  "/contests/update",
   contestsValidator.updateContest,
   contestsController.updateContest
 );

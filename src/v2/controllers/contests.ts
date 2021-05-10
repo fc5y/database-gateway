@@ -8,8 +8,8 @@ const createContest = async (
   next: NextFunction
 ) => {
   try {
-    const value = req.body as RequestBodySchema;
-    await knex("Contests").insert(value);
+    const { values } = req.body as RequestBodySchema;
+    await knex('Contests').insert(values);
 
     res.json({
       error: 0,
@@ -66,7 +66,7 @@ const deleteContest = async (
 ) => {
   try {
     const { where } = req.body as RequestBodySchema;
-    await knex("Contest").where(where).del();
+    await knex("Contests").where(where).del();
 
     res.json({
       error: 0,
