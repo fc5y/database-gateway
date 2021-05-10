@@ -10,11 +10,7 @@ const readContest = [
   validationMiddleware,
 ];
 
-const updateContest = [
-  body('where').isObject(),
-  body('values').isObject(),
-  validationMiddleware,
-];
+const updateContest = [body('where').isObject(), body('values').isObject(), validationMiddleware];
 
 const deleteContest = [body('where').isObject(), validationMiddleware];
 

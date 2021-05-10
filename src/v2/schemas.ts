@@ -1,8 +1,8 @@
 export interface RequestBodySchema {
   offset: number;
   limit: number;
-  where: Object;
-  values: Array<Object>;
+  where: Record<string, unknown>;
+  values: Array<Record<string, unknown>>;
 }
 
 export interface ResponseBodySchema {
@@ -10,6 +10,6 @@ export interface ResponseBodySchema {
   error_msg?: string;
   data?: {
     total: number;
-    items: Array<Object>;
+    items: Array<Record<string, unknown>>;
   };
 }

@@ -2,11 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RequestBodySchema } from '../schemas';
 import knex from '../../db';
 
-const createContest = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const createContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { values } = req.body as RequestBodySchema;
     await knex('Contests').insert(values);
@@ -19,15 +15,11 @@ const createContest = async (
   }
 };
 
-const readContest = async (req: Request, res: Response, next: NextFunction) => {
+const readContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const items = await knex('Contests')
-      .select('*')
-      .where(where)
-      .offset(offset)
-      .limit(limit);
+    const items = await knex('Contests').select('*').where(where).offset(offset).limit(limit);
     const total = await knex('Contests').where(where).count('*');
 
     res.json({
@@ -42,11 +34,7 @@ const readContest = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const updateContest = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const updateContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = req.body as RequestBodySchema;
     await knex('Contests').where(where).update(values);
@@ -59,11 +47,7 @@ const updateContest = async (
   }
 };
 
-const deleteContest = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const deleteContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where } = req.body as RequestBodySchema;
     await knex('Contests').where(where).del();

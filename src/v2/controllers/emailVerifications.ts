@@ -5,8 +5,8 @@ import knex from '../../db';
 async function createEmailVerification(
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
-) {
+  next: express.NextFunction,
+): Promise<void> {
   try {
     const { values } = req.body as RequestBodySchema;
     await knex('EmailVerifications').insert(values);
@@ -19,16 +19,12 @@ async function createEmailVerification(
 async function readEmailVerification(
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
-) {
+  next: express.NextFunction,
+): Promise<void> {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const values = await knex('EmailVerifications')
-      .select('*')
-      .where(where)
-      .offset(offset)
-      .limit(limit);
+    const values = await knex('EmailVerifications').select('*').where(where).offset(offset).limit(limit);
     const total = await knex('EmailVerifications').count('*');
     res.json({
       error: 0,
@@ -45,8 +41,8 @@ async function readEmailVerification(
 async function updateEmailVerification(
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
-) {
+  next: express.NextFunction,
+): Promise<void> {
   try {
     const { where, values } = req.body as RequestBodySchema;
     await knex('EmailVerifications').where(where).update(values);
@@ -59,8 +55,8 @@ async function updateEmailVerification(
 async function deleteEmailVerification(
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction
-) {
+  next: express.NextFunction,
+): Promise<void> {
   try {
     const { where } = req.body as RequestBodySchema;
     await knex('EmailVerifications').where(where).del();

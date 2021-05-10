@@ -2,11 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RequestBodySchema } from '../schemas';
 import knex from '../../db';
 
-const createParticipation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const createParticipation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { values } = req.body as RequestBodySchema;
     await knex('Participations').insert(values);
@@ -19,11 +15,7 @@ const createParticipation = async (
   }
 };
 
-const readParticipation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const readParticipation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
@@ -43,11 +35,7 @@ const readParticipation = async (
   }
 };
 
-const updateParticipation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const updateParticipation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = req.body as RequestBodySchema;
     await knex('Participations').where(where).update(values);
@@ -60,11 +48,7 @@ const updateParticipation = async (
   }
 };
 
-const deleteParticipation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const deleteParticipation = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where } = req.body as RequestBodySchema;
     await knex('Participations').where(where).del();
