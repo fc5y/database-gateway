@@ -69,7 +69,7 @@ const deleteContest = async (
     await knex("Contests").where(where).del();
 
     res.json({
-      error: 0,
+      error: 0, 
     });
   } catch (err) {
     next(err);
