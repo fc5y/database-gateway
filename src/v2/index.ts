@@ -14,6 +14,9 @@ import usersValidators from './validators/users';
 import contestsValidator from './validators/contests';
 import contestsController from './controllers/contests';
 
+import emailVerificationsController from './controllers/emailVerifications';
+import emailVerificationsValidator from './validators/emailVerifications';
+
 const router = express.Router();
 
 router.get('/timestamp', (req: express.Request, res: express.Response) => {
@@ -111,6 +114,34 @@ router.get(
   parseQueryString,
   contestsValidator.readContest,
   contestsController.readContest
+);
+
+//Email_Verifications
+router.post(
+  '/email_verifications/create',
+  emailVerificationsValidator.createEmailVerification,
+  emailVerificationsController.createEmailVerification
+);
+router.post(
+  '/email_verifications/read',
+  emailVerificationsValidator.readEmailVerification,
+  emailVerificationsController.readEmailVerification
+);
+router.post(
+  '/email_verifications/update',
+  emailVerificationsValidator.updateEmailVerification,
+  emailVerificationsController.updateEmailVerification
+);
+router.post(
+  '/email_verifications/delete',
+  emailVerificationsValidator.deleteEmailVerification,
+  emailVerificationsController.deleteEmailVerification
+);
+router.get(
+  '/email_verifications',
+  parseQueryString,
+  emailVerificationsValidator.readEmailVerification,
+  emailVerificationsController.readEmailVerification
 );
 
 router.use(
