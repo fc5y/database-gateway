@@ -1,6 +1,6 @@
-import express from "express";
-import knex from "../../db";
-import { RequestBodySchema } from "../schemas";
+import express from 'express';
+import knex from '../../db';
+import { RequestBodySchema } from '../schemas';
 
 async function createUser(
   req: express.Request,
@@ -9,7 +9,7 @@ async function createUser(
 ) {
   try {
     const { values } = req.body as RequestBodySchema;
-    await knex("Users").insert(values);
+    await knex('Users').insert(values);
     res.json({ error: 0 });
   } catch (err) {
     next(err);
@@ -24,16 +24,16 @@ async function readUser(
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const values = await knex("Users")
-      .select("*")
+    const values = await knex('Users')
+      .select('*')
       .where(where)
       .offset(offset)
       .limit(limit);
-    const total = await knex("Users").count("*");
+    const total = await knex('Users').count('*');
     res.json({
       error: 0,
       data: {
-        total: total[0]["count(*)"],
+        total: total[0]['count(*)'],
         values,
       },
     });
@@ -49,7 +49,7 @@ async function updateUser(
 ) {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    await knex("User").where(where).update(values);
+    await knex('User').where(where).update(values);
 
     res.json({ error: 0 });
   } catch (err) {
@@ -64,7 +64,7 @@ async function deleteUser(
 ) {
   try {
     const { where } = req.body as RequestBodySchema;
-    await knex("Users").where(where).del();
+    await knex('Users').where(where).del();
     res.json({ error: 0 });
   } catch (err) {
     next(err);

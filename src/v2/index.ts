@@ -11,13 +11,16 @@ import participationsController from './controllers/participations';
 import usersController from './controllers/users';
 import usersValidators from './validators/users';
 
+import contestsValidator from './validators/contests';
+import contestsController from './controllers/contests';
+
 const router = express.Router();
 
 router.get('/timestamp', (req: express.Request, res: express.Response) => {
   res.json({
     data: { timestamp: utils.getCurrentTimestamp() },
     error: 0,
-    error_msg: ''
+    error_msg: '',
   });
 });
 
@@ -59,11 +62,56 @@ router.get(
 );
 
 //Users
-router.post('/users/create', usersValidators.createUser, usersController.createUser)
-router.post('/users/read', usersValidators.readUser, usersController.readUser)
-router.post('/users/update', usersValidators.updateUser, usersController.updateUser)
-router.post('/users/delete', usersValidators.deleteUser, usersController.deleteUser)
-router.get('/users', parseQueryString, usersValidators.readUser, usersController.readUser)
+router.post(
+  '/users/create',
+  usersValidators.createUser,
+  usersController.createUser
+);
+router.post('/users/read', usersValidators.readUser, usersController.readUser);
+router.post(
+  '/users/update',
+  usersValidators.updateUser,
+  usersController.updateUser
+);
+router.post(
+  '/users/delete',
+  usersValidators.deleteUser,
+  usersController.deleteUser
+);
+router.get(
+  '/users',
+  parseQueryString,
+  usersValidators.readUser,
+  usersController.readUser
+);
+
+// Contests
+router.post(
+  '/contests/create',
+  contestsValidator.createContest,
+  contestsController.createContest
+);
+router.post(
+  '/contests/read',
+  contestsValidator.readContest,
+  contestsController.readContest
+);
+router.post(
+  '/contests/delete',
+  contestsValidator.deleteContest,
+  contestsController.deleteContest
+);
+router.post(
+  '/contests/update',
+  contestsValidator.updateContest,
+  contestsController.updateContest
+);
+router.get(
+  '/contests',
+  parseQueryString,
+  contestsValidator.readContest,
+  contestsController.readContest
+);
 
 router.use(
   (
@@ -77,7 +125,7 @@ router.use(
       res.status(400).json(error);
     } else {
       res.status(500).json({
-        ...ERRORS.SERVER_ERROR
+        ...ERRORS.SERVER_ERROR,
       });
     }
   }

@@ -2,14 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { RequestBodySchema } from '../schemas';
 import knex from '../../db';
 
-const createParticipation = async (
+const createContest = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { values } = req.body as RequestBodySchema;
-    await knex('Participations').insert(values);
+    await knex('Contests').insert(values);
 
     res.json({
       error: 0,
@@ -19,22 +19,21 @@ const createParticipation = async (
   }
 };
 
-const readParticipation = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const readContest = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const query = knex('Participations').where(where);
-    const total = await query.clone().count('*', { as: 'count' }).first();
-    const items = await query.clone().select('*').offset(offset).limit(limit);
+    const items = await knex('Contests')
+      .select('*')
+      .where(where)
+      .offset(offset)
+      .limit(limit);
+    const total = await knex('Contests').where(where).count('*');
 
     res.json({
       error: 0,
       data: {
-        total: total?.count,
+        total: total[0]['count(*)'],
         items,
       },
     });
@@ -43,14 +42,14 @@ const readParticipation = async (
   }
 };
 
-const updateParticipation = async (
+const updateContest = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    await knex('Participations').where(where).update(values);
+    await knex('Contests').where(where).update(values);
 
     res.json({
       error: 0,
@@ -60,14 +59,14 @@ const updateParticipation = async (
   }
 };
 
-const deleteParticipation = async (
+const deleteContest = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { where } = req.body as RequestBodySchema;
-    await knex('Participations').where(where).del();
+    await knex('Contests').where(where).del();
 
     res.json({
       error: 0,
@@ -78,8 +77,8 @@ const deleteParticipation = async (
 };
 
 export default {
-  createParticipation,
-  readParticipation,
-  updateParticipation,
-  deleteParticipation,
+  createContest,
+  readContest,
+  updateContest,
+  deleteContest,
 };

@@ -1,26 +1,26 @@
 import { body } from 'express-validator';
 import { validationMiddleware } from './common';
 
-const createUser = [body('values').isObject(), validationMiddleware];
+const createContest = [body('values').isObject(), validationMiddleware];
 
-const readUser = [
+const readContest = [
   body('offset').isInt({ min: 0 }),
   body('limit').isInt({ min: 0 }),
   body('where').isObject().optional(),
   validationMiddleware,
 ];
 
-const updateUser = [
+const updateContest = [
   body('where').isObject(),
   body('values').isObject(),
   validationMiddleware,
 ];
 
-const deleteUser = [body('where').isObject(), validationMiddleware];
+const deleteContest = [body('where').isObject(), validationMiddleware];
 
 export default {
-  createUser,
-  readUser,
-  updateUser,
-  deleteUser,
+  createContest,
+  readContest,
+  updateContest,
+  deleteContest,
 };
