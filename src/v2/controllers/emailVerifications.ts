@@ -23,7 +23,7 @@ async function readEmailVerification(
 ) {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
-    const { where } = req.body?.where || {};
+    const where = req.body?.where || {};
     const values = await knex('EmailVerifications')
       .select('*')
       .where(where)
