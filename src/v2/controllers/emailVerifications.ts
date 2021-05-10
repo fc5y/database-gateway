@@ -1,6 +1,6 @@
-import express from "express";
-import { RequestBodySchema } from "../schemas";
-import knex from "../../db";
+import express from 'express';
+import { RequestBodySchema } from '../schemas';
+import knex from '../../db';
 
 async function createEmailVerification(
   req: express.Request,
@@ -9,7 +9,7 @@ async function createEmailVerification(
 ) {
   try {
     const { values } = req.body as RequestBodySchema;
-    await knex("EmailVerifications").insert(values);
+    await knex('EmailVerifications').insert(values);
     res.json({ error: 0 });
   } catch (err) {
     next(err);
@@ -24,16 +24,16 @@ async function readEmailVerification(
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const { where } = req.body?.where || {};
-    const values = await knex("EmailVerifications")
-      .select("*")
+    const values = await knex('EmailVerifications')
+      .select('*')
       .where(where)
       .offset(offset)
       .limit(limit);
-    const total = await knex("EmailVerifications").count("*");
+    const total = await knex('EmailVerifications').count('*');
     res.json({
       error: 0,
       data: {
-        total: total[0]["count(*)"],
+        total: total[0]['count(*)'],
         values,
       },
     });
@@ -49,7 +49,7 @@ async function updateEmailVerification(
 ) {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    await knex("EmailVerifications").where(where).update(values);
+    await knex('EmailVerifications').where(where).update(values);
     res.json({ error: 0 });
   } catch (err) {
     next(err);
@@ -63,7 +63,7 @@ async function deleteEmailVerification(
 ) {
   try {
     const { where } = req.body as RequestBodySchema;
-    await knex("EmailVerifications").where(where).del();
+    await knex('EmailVerifications').where(where).del();
     res.json({ error: 0 });
   } catch (err) {
     next(err);
