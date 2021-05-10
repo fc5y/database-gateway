@@ -19,15 +19,19 @@ const readUser = async (req: Request, res: Response, next: NextFunction): Promis
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const values = await knex('Users').select('*').where(where).offset(offset).limit(limit);
-    const total = await knex('Users').count('*');
 
-    res.json({
-      error: 0,
-      data: {
-        total: total[0]['count(*)'],
-        values,
-      },
+    await knex.transaction(async (trx) => {
+      const query = trx('Users').where(where);
+      const total = await query.clone().count('*', { as: 'count' }).first();
+      const items = await query.clone().select('*').offset(offset).limit(limit);
+
+      res.json({
+        error: 0,
+        data: {
+          total: total?.count,
+          items,
+        },
+      });
     });
   } catch (err) {
     next(err);

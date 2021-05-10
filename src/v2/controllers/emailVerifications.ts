@@ -19,15 +19,19 @@ const readEmailVerification = async (req: Request, res: Response, next: NextFunc
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const values = await knex('EmailVerifications').select('*').where(where).offset(offset).limit(limit);
-    const total = await knex('EmailVerifications').count('*');
 
-    res.json({
-      error: 0,
-      data: {
-        total: total[0]['count(*)'],
-        values,
-      },
+    await knex.transaction(async (trx) => {
+      const query = trx('EmailVerifications').where(where);
+      const total = await query.clone().count('*', { as: 'count' }).first();
+      const items = await query.clone().select('*').offset(offset).limit(limit);
+
+      res.json({
+        error: 0,
+        data: {
+          total: total?.count,
+          items,
+        },
+      });
     });
   } catch (err) {
     next(err);
