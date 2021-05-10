@@ -12,7 +12,7 @@ const createParticipation = async (
     await knex('Participations').insert(values);
 
     res.json({
-      error: 0
+      error: 0,
     });
   } catch (err) {
     next(err);
@@ -35,8 +35,8 @@ const readParticipation = async (
       error: 0,
       data: {
         total: total?.count,
-        items
-      }
+        items,
+      },
     });
   } catch (err) {
     next(err);
@@ -53,7 +53,7 @@ const updateParticipation = async (
     await knex('Participations').where(where).update(values);
 
     res.json({
-      error: 0
+      error: 0,
     });
   } catch (err) {
     next(err);
@@ -70,7 +70,7 @@ const deleteParticipation = async (
     await knex('Participations').where(where).del();
 
     res.json({
-      error: 0
+      error: 0,
     });
   } catch (err) {
     next(err);
@@ -81,5 +81,5 @@ export default {
   createParticipation,
   readParticipation,
   updateParticipation,
-  deleteParticipation
+  deleteParticipation,
 };

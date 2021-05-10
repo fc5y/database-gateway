@@ -7,13 +7,13 @@ const readParticipation = [
   body('offset').isInt({ min: 0 }),
   body('limit').isInt({ min: 0 }),
   body('where').isObject().optional(),
-  validationMiddleware
+  validationMiddleware,
 ];
 
 const updateParticipation = [
   body('where').isObject(),
   body('values').isObject(),
-  validationMiddleware
+  validationMiddleware,
 ];
 
 const deleteParticipation = [body('where').isObject(), validationMiddleware];
@@ -22,5 +22,5 @@ export default {
   createParticipation,
   readParticipation,
   updateParticipation,
-  deleteParticipation
+  deleteParticipation,
 };

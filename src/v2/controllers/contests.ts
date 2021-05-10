@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { RequestBodySchema } from "../schemas";
-import knex from "../../db";
+import { Request, Response, NextFunction } from 'express';
+import { RequestBodySchema } from '../schemas';
+import knex from '../../db';
 
 const createContest = async (
   req: Request,
@@ -23,17 +23,17 @@ const readContest = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
-    const items = await knex("Contests")
-      .select("*")
+    const items = await knex('Contests')
+      .select('*')
       .where(where)
       .offset(offset)
       .limit(limit);
-    const total = await knex("Contests").where(where).count("*");
+    const total = await knex('Contests').where(where).count('*');
 
     res.json({
       error: 0,
       data: {
-        total: total[0]["count(*)"],
+        total: total[0]['count(*)'],
         items,
       },
     });
@@ -49,7 +49,7 @@ const updateContest = async (
 ) => {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    await knex("Contests").where(where).update(values);
+    await knex('Contests').where(where).update(values);
 
     res.json({
       error: 0,
@@ -66,10 +66,10 @@ const deleteContest = async (
 ) => {
   try {
     const { where } = req.body as RequestBodySchema;
-    await knex("Contests").where(where).del();
+    await knex('Contests').where(where).del();
 
     res.json({
-      error: 0, 
+      error: 0,
     });
   } catch (err) {
     next(err);

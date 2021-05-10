@@ -1,33 +1,33 @@
-import express from "express";
+import express from 'express';
 
-import knex from "../db";
-import * as utils from "../utils";
-import { ERRORS, LogicError } from "./errors";
+import knex from '../db';
+import * as utils from '../utils';
+import { ERRORS, LogicError } from './errors';
 
-import parseQueryString from "./middlewares/parseQueryString";
-import participationsValidator from "./validators/participations";
-import participationsController from "./controllers/participations";
+import parseQueryString from './middlewares/parseQueryString';
+import participationsValidator from './validators/participations';
+import participationsController from './controllers/participations';
 
-import usersController from "./controllers/users";
-import usersValidators from "./validators/users";
+import usersController from './controllers/users';
+import usersValidators from './validators/users';
 
-import contestsValidator from "./validators/contests";
-import contestsController from "./controllers/contests";
+import contestsValidator from './validators/contests';
+import contestsController from './controllers/contests';
 
 const router = express.Router();
 
-router.get("/timestamp", (req: express.Request, res: express.Response) => {
+router.get('/timestamp', (req: express.Request, res: express.Response) => {
   res.json({
     data: { timestamp: utils.getCurrentTimestamp() },
     error: 0,
-    error_msg: "",
+    error_msg: '',
   });
 });
 
-router.get("/contests", (req: express.Request, res: express.Response) => {
+router.get('/contests', (req: express.Request, res: express.Response) => {
   knex
-    .select("*")
-    .from("Contests")
+    .select('*')
+    .from('Contests')
     .then((rows) => {
       res.json(rows);
     });
@@ -35,27 +35,27 @@ router.get("/contests", (req: express.Request, res: express.Response) => {
 
 // Participations
 router.post(
-  "/participations/create",
+  '/participations/create',
   participationsValidator.createParticipation,
   participationsController.createParticipation
 );
 router.post(
-  "/participations/read",
+  '/participations/read',
   participationsValidator.readParticipation,
   participationsController.readParticipation
 );
 router.post(
-  "/participations/update",
+  '/participations/update',
   participationsValidator.updateParticipation,
   participationsController.updateParticipation
 );
 router.post(
-  "/participations/delete",
+  '/participations/delete',
   participationsValidator.deleteParticipation,
   participationsController.deleteParticipation
 );
 router.get(
-  "/participations",
+  '/participations',
   parseQueryString,
   participationsValidator.readParticipation,
   participationsController.readParticipation
@@ -63,23 +63,23 @@ router.get(
 
 //Users
 router.post(
-  "/users/create",
+  '/users/create',
   usersValidators.createUser,
   usersController.createUser
 );
-router.post("/users/read", usersValidators.readUser, usersController.readUser);
+router.post('/users/read', usersValidators.readUser, usersController.readUser);
 router.post(
-  "/users/update",
+  '/users/update',
   usersValidators.updateUser,
   usersController.updateUser
 );
 router.post(
-  "/users/delete",
+  '/users/delete',
   usersValidators.deleteUser,
   usersController.deleteUser
 );
 router.get(
-  "/users",
+  '/users',
   parseQueryString,
   usersValidators.readUser,
   usersController.readUser
@@ -87,27 +87,27 @@ router.get(
 
 // Contests
 router.post(
-  "/contests/create",
+  '/contests/create',
   contestsValidator.createContest,
   contestsController.createContest
 );
 router.post(
-  "/contests/read",
+  '/contests/read',
   contestsValidator.readContest,
   contestsController.readContest
 );
 router.post(
-  "/contests/delete",
+  '/contests/delete',
   contestsValidator.deleteContest,
   contestsController.deleteContest
 );
 router.post(
-  "/contests/update",
+  '/contests/update',
   contestsValidator.updateContest,
   contestsController.updateContest
 );
 router.get(
-  "/contests",
+  '/contests',
   parseQueryString,
   contestsValidator.readContest,
   contestsController.readContest
