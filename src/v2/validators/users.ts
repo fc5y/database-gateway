@@ -10,11 +10,7 @@ const readUser = [
   validationMiddleware,
 ];
 
-const updateUser = [
-  body('where').isObject(),
-  body('values').isObject(),
-  validationMiddleware,
-];
+const updateUser = [body('where').isObject(), body('values').isObject(), validationMiddleware];
 
 const deleteUser = [body('where').isObject(), validationMiddleware];
 
