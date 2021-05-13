@@ -19,6 +19,19 @@ import emailVerificationsValidator from './validators/emailVerifications';
 
 const router = express.Router();
 
+router.get('/', (req: express.Request, res: express.Response) => {
+  res.json({
+    error: 0,
+    error_msg: '',
+    data: {
+      name: 'database-gateway',
+      description: 'Database Gateway',
+      homepage: 'https://docs.google.com/document/d/1ppL_pF9qZ5rNGpR5XslMHkZFKD2_sxZRPMFrUPRVCBM/edit?usp=sharing',
+      version: '2.0.0',
+    },
+  });
+});
+
 router.get('/timestamp', (req: express.Request, res: express.Response) => {
   res.json({
     data: { timestamp: utils.getCurrentTimestamp() },
