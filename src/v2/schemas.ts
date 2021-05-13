@@ -7,7 +7,7 @@ export interface RequestBodySchema {
 
 export interface ResponseBodySchema {
   error: number;
-  error_msg?: string;
+  error_msg: string;
   data?: {
     total: number;
     items: Array<Record<string, unknown>>;

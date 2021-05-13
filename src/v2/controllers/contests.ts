@@ -9,6 +9,7 @@ const createContest = async (req: Request, res: Response, next: NextFunction): P
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -27,6 +28,7 @@ const readContest = async (req: Request, res: Response, next: NextFunction): Pro
 
       res.json({
         error: 0,
+        error_msg: '',
         data: {
           total: total?.count,
           items,
@@ -45,6 +47,7 @@ const updateContest = async (req: Request, res: Response, next: NextFunction): P
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -58,6 +61,7 @@ const deleteContest = async (req: Request, res: Response, next: NextFunction): P
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);

@@ -9,6 +9,7 @@ const createParticipation = async (req: Request, res: Response, next: NextFuncti
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -27,6 +28,7 @@ const readParticipation = async (req: Request, res: Response, next: NextFunction
 
       res.json({
         error: 0,
+        error_msg: '',
         data: {
           total: total?.count,
           items,
@@ -45,6 +47,7 @@ const updateParticipation = async (req: Request, res: Response, next: NextFuncti
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -58,6 +61,7 @@ const deleteParticipation = async (req: Request, res: Response, next: NextFuncti
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);

@@ -9,6 +9,7 @@ const createEmailVerification = async (req: Request, res: Response, next: NextFu
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -27,6 +28,7 @@ const readEmailVerification = async (req: Request, res: Response, next: NextFunc
 
       res.json({
         error: 0,
+        error_msg: '',
         data: {
           total: total?.count,
           items,
@@ -45,6 +47,7 @@ const updateEmailVerification = async (req: Request, res: Response, next: NextFu
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -58,6 +61,7 @@ const deleteEmailVerification = async (req: Request, res: Response, next: NextFu
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
