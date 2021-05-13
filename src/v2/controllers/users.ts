@@ -9,6 +9,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction): Prom
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -27,6 +28,7 @@ const readUser = async (req: Request, res: Response, next: NextFunction): Promis
 
       res.json({
         error: 0,
+        error_msg: '',
         data: {
           total: total?.count,
           items,
@@ -45,6 +47,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction): Prom
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
@@ -58,6 +61,7 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction): Prom
 
     res.json({
       error: 0,
+      error_msg: '',
     });
   } catch (err) {
     next(err);
