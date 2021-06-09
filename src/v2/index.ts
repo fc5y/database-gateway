@@ -40,15 +40,6 @@ router.get('/timestamp', (req: express.Request, res: express.Response) => {
   });
 });
 
-router.get('/contests', (req: express.Request, res: express.Response) => {
-  knex
-    .select('*')
-    .from('Contests')
-    .then((rows) => {
-      res.json(rows);
-    });
-});
-
 // Participations
 router.post(
   '/participations/create',
