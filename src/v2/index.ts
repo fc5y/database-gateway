@@ -119,7 +119,8 @@ router.get(
   emailVerificationsController.readEmailVerification,
 );
 
-router.use((error: Error, req: express.Request, res: express.Response) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+router.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
   console.error(error);
   if (error instanceof LogicError) {
     res.status(400).json(error);
