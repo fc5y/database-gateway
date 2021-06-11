@@ -13,6 +13,10 @@ const ERRORS: { [name: string]: ResponseBodySchema } = {
     error: 4000,
     error_msg: 'Server error',
   },
+  SQL_ERROR: {
+    error: 4001,
+    error_msg: 'SQL error',
+  },
 };
 
 class LogicError extends Error {
