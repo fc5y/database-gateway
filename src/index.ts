@@ -6,7 +6,7 @@ import cors from 'cors';
 import v2 from './v2';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 8019;
 
 app.set('json spaces', 2); // optional, format json responses with 2 spaces
 app.set('json replacer', function (this: any, key: string, value: any) {
