@@ -1,6 +1,5 @@
 import express from 'express';
 
-import knex from '../db';
 import * as utils from '../utils';
 import { ERRORS, LogicError } from './errors';
 
