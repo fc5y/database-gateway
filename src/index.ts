@@ -11,7 +11,7 @@ const port = process.env.PORT || 8019;
 app.set('json spaces', 2); // optional, format json responses with 2 spaces
 app.set('json replacer', function (this: any, key: string, value: any) {
   if (this[key] instanceof Date) {
-    return Math.round(this[key].getTime() / 1000);
+    return Math.floor(this[key].getTime() / 1000);
   }
   return value;
 });
