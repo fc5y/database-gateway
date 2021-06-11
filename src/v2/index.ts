@@ -114,9 +114,15 @@ router.use((error: Error, req: express.Request, res: express.Response, next: exp
   console.error(error);
   if (error instanceof LogicError) {
     res.status(400).json(error);
+  } else if ('sqlMessage' in error) {
+    res.status(400).json({
+      ...ERRORS.SQL_ERROR,
+      error_msg: error.toString(),
+    });
   } else {
     res.status(500).json({
       ...ERRORS.SERVER_ERROR,
+      error_msg: error.toString(),
     });
   }
 });
