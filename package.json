@@ -6,7 +6,7 @@
   "scripts": {
     "tsc": "tsc",
     "serve": "nodemon dist/index.js",
-    "lint": "eslint -c .eslintrc.json --ext .ts src",
+    "lint": "eslint -c .eslintrc.json --ext .ts src migrations",
     "prettier-format": "prettier -c .prettierrc.json 'src/**/*.ts' --write"
   },
   "repository": {
@@ -25,7 +25,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.11.1",
     "knex": "^0.95.6",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "ts-node": "^10.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
