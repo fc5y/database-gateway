@@ -5,9 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "tsc": "tsc",
-    "serve": "nodemon dist/index.js",
+    "serve": "nodemon dist/src/index.js",
     "lint": "eslint -c .eslintrc.json --ext .ts src migrations",
-    "prettier-format": "prettier -c .prettierrc.json 'src/**/*.ts' --write"
+    "prettier-format": "prettier -c .prettierrc.json 'src/**/*.ts' 'migrations/**/*.ts' --write"
   },
   "repository": {
     "type": "git",

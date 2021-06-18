@@ -20,11 +20,12 @@ const readContest = async (req: Request, res: Response, next: NextFunction): Pro
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
+    const order_by = req.body?.order_by || [];
 
     await knex.transaction(async (trx) => {
       const query = trx('Contests').where(where);
       const total = await query.clone().count('*', { as: 'count' }).first();
-      const items = await query.clone().select('*').offset(offset).limit(limit);
+      const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by, 'asc');
 
       res.json({
         error: 0,

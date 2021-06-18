@@ -20,11 +20,12 @@ const readUser = async (req: Request, res: Response, next: NextFunction): Promis
   try {
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
+    const order_by = req.body?.order_by || [];
 
     await knex.transaction(async (trx) => {
       const query = trx('Users').where(where);
       const total = await query.clone().count('*', { as: 'count' }).first();
-      const items = await query.clone().select('*').offset(offset).limit(limit);
+      const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by, 'asc');
 
       res.json({
         error: 0,
