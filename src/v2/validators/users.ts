@@ -7,6 +7,8 @@ const readUser = [
   body('offset').isInt({ min: 0 }),
   body('limit').isInt({ min: 0 }),
   body('where').isObject().optional(),
+  body('order_by').isArray().optional(),
+  body('order_by.*').isString(),
   validationMiddleware,
 ];
 
