@@ -21,17 +21,18 @@ const readEmailVerification = async (req: Request, res: Response, next: NextFunc
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
     const order_by = req.body?.order_by || [];
+    const has_total = req.body?.has_total || false;
 
     await knex.transaction(async (trx) => {
       const query = trx('EmailVerifications').where(where);
-      const total = await query.clone().count('*', { as: 'count' }).first();
       const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by, 'asc');
+      const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
       res.json({
         error: 0,
         error_msg: '',
         data: {
-          total: total?.count,
+          total: total,
           items,
         },
       });

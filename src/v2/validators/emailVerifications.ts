@@ -9,6 +9,7 @@ const readEmailVerification = [
   body('where').isObject().optional(),
   body('order_by').isArray().optional(),
   body('order_by.*').isString(),
+  body('has_total').isBoolean().optional(),
   validationMiddleware,
 ];
 
