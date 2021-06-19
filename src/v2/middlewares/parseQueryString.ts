@@ -60,6 +60,9 @@ function parseBoolean(val: any) {
 }
 
 function parseQueryString(req: Request, res: Response, next: NextFunction): void {
+  if (req.method !== 'GET') {
+    throw new Error('parseQueryString should only be used for GET requests');
+  }
   req.body = parseObject(req.query);
   return next();
 }
