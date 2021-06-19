@@ -21,17 +21,30 @@ const readContest = async (req: Request, res: Response, next: NextFunction): Pro
     const { offset, limit } = req.body as RequestBodySchema;
     const where = req.body?.where || {};
     const order_by = req.body?.order_by || [];
+    const has_total = req.body?.has_total || false;
 
     await knex.transaction(async (trx) => {
-      const query = trx('Contests').where(where);
-      const total = await query.clone().count('*', { as: 'count' }).first();
+      const query = trx('Contests');
+      if (where.constructor === Object) {
+        query.where(where);
+      } else {
+        for (const value of where) {
+          if (Array.isArray(value)) {
+            query.where(value[0], value[1], value[2]);
+          } else {
+            query.whereRaw(value, []);
+          }
+        }
+      }
+
       const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by, 'asc');
+      const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
       res.json({
         error: 0,
-        error_msg: '',
+        error_msg: req.method === 'GET' ? 'GET is unsafe, use POST instead' : '',
         data: {
-          total: total?.count,
+          total: total,
           items,
         },
       });

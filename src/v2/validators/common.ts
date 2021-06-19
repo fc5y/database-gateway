@@ -11,4 +11,14 @@ function validationMiddleware(req: Request, res: Response, next: NextFunction): 
   }
 }
 
-export { validationMiddleware };
+function isWhereClause(value: unknown): boolean {
+  if (typeof value === 'string') {
+    return true;
+  }
+  if (Array.isArray(value) && value.length == 3) {
+    return true;
+  }
+  throw new Error('where clause must be a string or an array of length 3');
+}
+
+export { validationMiddleware, isWhereClause };
