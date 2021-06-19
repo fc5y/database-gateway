@@ -42,7 +42,7 @@ const readContest = async (req: Request, res: Response, next: NextFunction): Pro
 
       res.json({
         error: 0,
-        error_msg: '',
+        error_msg: req.method === 'GET' ? 'GET is unsafe, use POST instead' : '',
         data: {
           total: total,
           items,
