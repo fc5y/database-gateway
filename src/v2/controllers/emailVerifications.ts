@@ -24,7 +24,19 @@ const readEmailVerification = async (req: Request, res: Response, next: NextFunc
     const has_total = req.body?.has_total || false;
 
     await knex.transaction(async (trx) => {
-      const query = trx('EmailVerifications').where(where);
+      const query = trx('EmailVerifications');
+      if (where.constructor === Object) {
+        query.where(where);
+      } else {
+        for (const value of where) {
+          if (Array.isArray(value)) {
+            query.where(value[0], value[1], value[2]);
+          } else {
+            query.whereRaw(value, []);
+          }
+        }
+      }
+
       const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by, 'asc');
       const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
