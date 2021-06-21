@@ -17,3 +17,7 @@ Run `npm run lint`
 ## Format code with Prettier
 
 Run `npm run prettier-format`
+
+## Run latest migrations
+
+Run `npm run migrate`

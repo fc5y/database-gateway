@@ -7,7 +7,8 @@
     "tsc": "tsc",
     "serve": "nodemon dist/src/index.js",
     "lint": "eslint -c .eslintrc.json --ext .ts src migrations",
-    "prettier-format": "prettier -c .prettierrc.json 'src/**/*.ts' 'migrations/**/*.ts' --write"
+    "prettier-format": "prettier -c .prettierrc.json 'src/**/*.ts' 'migrations/**/*.ts' --write",
+    "migrate": "knex migrate:latest"
   },
   "repository": {
     "type": "git",
