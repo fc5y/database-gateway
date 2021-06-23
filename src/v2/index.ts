@@ -16,6 +16,9 @@ import contestsController from './controllers/contests';
 import emailVerificationsController from './controllers/emailVerifications';
 import emailVerificationsValidator from './validators/emailVerifications';
 
+import announcementsController from './controllers/announcements';
+import announcementsValidator from './validators/announcements';
+
 const router = express.Router();
 
 router.get('/', (req: express.Request, res: express.Response) => {
@@ -107,6 +110,30 @@ router.get(
   parseQueryString,
   emailVerificationsValidator.readEmailVerification,
   emailVerificationsController.readEmailVerification,
+);
+
+// Announcements
+router.post(
+  '/announcements/create',
+  announcementsValidator.createAnnouncement,
+  announcementsController.createAnnouncement,
+);
+router.post('/announcements/read', announcementsValidator.readAnnouncement, announcementsController.readAnnouncement);
+router.post(
+  '/announcements/update',
+  announcementsValidator.updateAnnouncement,
+  announcementsController.updateAnnouncement,
+);
+router.post(
+  '/announcements/delete',
+  announcementsValidator.deleteAnnouncement,
+  announcementsController.deleteAnnouncement,
+);
+router.get(
+  '/announcements',
+  parseQueryString,
+  announcementsValidator.readAnnouncement,
+  announcementsController.readAnnouncement,
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -3,10 +3,10 @@ import { RequestBodySchema } from '../schemas';
 import { ERRORS, LogicError } from '../errors';
 import knex from '../../db';
 
-const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const createAnnouncement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { values } = req.body as RequestBodySchema;
-    await knex('Users').insert(values);
+    await knex('Announcements').insert(values);
 
     res.json({
       error: 0,
@@ -17,12 +17,12 @@ const createUser = async (req: Request, res: Response, next: NextFunction): Prom
   }
 };
 
-const readUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const readAnnouncement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { offset, limit, where = {}, order_by = [], has_total = false } = req.body as RequestBodySchema;
 
     await knex.transaction(async (trx) => {
-      const query = trx('Users');
+      const query = trx('Announcements');
       if (Array.isArray(where)) {
         for (const value of where) {
           if (typeof value === 'string') {
@@ -56,10 +56,10 @@ const readUser = async (req: Request, res: Response, next: NextFunction): Promis
   }
 };
 
-const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const updateAnnouncement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = req.body as RequestBodySchema;
-    await knex('Users').where(where).update(values);
+    await knex('Announcements').where(where).update(values);
 
     res.json({
       error: 0,
@@ -70,10 +70,10 @@ const updateUser = async (req: Request, res: Response, next: NextFunction): Prom
   }
 };
 
-const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const deleteAnnouncement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where } = req.body as RequestBodySchema;
-    await knex('Users').where(where).del();
+    await knex('Announcements').where(where).del();
 
     res.json({
       error: 0,
@@ -85,8 +85,8 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction): Prom
 };
 
 export default {
-  createUser,
-  readUser,
-  updateUser,
-  deleteUser,
+  createAnnouncement,
+  readAnnouncement,
+  updateAnnouncement,
+  deleteAnnouncement,
 };

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 function isObject(val: any): boolean {
-  return val.constructor === Object;
+  return typeof val === 'object' && val !== null;
 }
 
 function isNumber(val: any): boolean {
