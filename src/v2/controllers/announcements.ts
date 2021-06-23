@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { RequestBodySchema } from '../schemas';
+import { ERRORS, LogicError } from '../errors';
 import knex from '../../db';
 
 const createAnnouncement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -18,26 +19,27 @@ const createAnnouncement = async (req: Request, res: Response, next: NextFunctio
 
 const readAnnouncement = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { offset, limit } = req.body as RequestBodySchema;
-    const where = req.body?.where || {};
-    const order_by = req.body?.order_by || [];
-    const has_total = req.body?.has_total || false;
+    const { offset, limit, where = {}, order_by = [], has_total = false } = req.body as RequestBodySchema;
 
     await knex.transaction(async (trx) => {
       const query = trx('Announcements');
-      if (where.constructor === Object) {
-        query.where(where);
-      } else {
+      if (Array.isArray(where)) {
         for (const value of where) {
-          if (Array.isArray(value)) {
+          if (typeof value === 'string') {
+            query.whereRaw(value, []);
+          } else if (Array.isArray(value) && value.length === 3) {
             query.where(value[0], value[1], value[2]);
           } else {
-            query.whereRaw(value, []);
+            throw new LogicError({ ...ERRORS.BAD_REQUEST });
           }
         }
+      } else if (typeof where === 'object' && where !== null) {
+        query.where(where);
+      } else {
+        throw new LogicError({ ...ERRORS.BAD_REQUEST });
       }
 
-      const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by, 'asc');
+      const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by);
       const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
       res.json({
