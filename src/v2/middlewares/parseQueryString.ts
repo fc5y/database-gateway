@@ -63,7 +63,6 @@ function parseQueryString(req: Request, res: Response, next: NextFunction): void
   if (req.method !== 'GET') {
     throw new Error('parseQueryString should only be used for GET requests');
   }
-  console.log(req.body);
   req.body = parseObject(req.query);
   return next();
 }

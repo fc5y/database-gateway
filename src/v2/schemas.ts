@@ -1,7 +1,7 @@
 export interface RequestBodySchema {
   offset: number;
   limit: number;
-  where: Record<string, unknown> | Array<Array<any>> | Array<string>;
+  where: Record<string, unknown> | Array<string | [any, any, any]>;
   values: Record<string, unknown>;
   order_by: Array<string>;
   has_total: boolean;
