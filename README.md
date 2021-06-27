@@ -6,7 +6,7 @@ Run `npm install`
 
 ## Start development server
 
-Run `npm run tsc` in one console window.
+Run `npm run build` in one console window.
 
 Run `npm run serve` in another console window.
 
