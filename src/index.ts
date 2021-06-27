@@ -21,7 +21,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.json({
+    name: 'database-gateway',
+  });
 });
 
 app.use('/db/v2', v2);
