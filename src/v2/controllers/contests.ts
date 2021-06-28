@@ -1,16 +1,27 @@
 import { Request, Response, NextFunction } from 'express';
-import { RequestBodySchema } from '../schemas';
-import { ERRORS, LogicError } from '../errors';
+import { applyWhere } from './common';
+import { assertWithSchema } from '../validation';
+import {
+  createContestParamsSchema,
+  readContestParamsSchema,
+  updateContestParamsSchema,
+  deleteContestParamsSchema,
+} from '../schemas/contests';
 import knex from '../../db';
+import { timestampToDate } from '../../utils';
 
 const createContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { values } = req.body as RequestBodySchema;
-    await knex('Contests').insert(values);
+    const { values } = assertWithSchema(req.body, createContestParamsSchema);
+    const { start_time } = values;
+    await knex('Contests').insert({
+      ...values,
+      start_time: start_time != null ? timestampToDate(start_time) : undefined,
+    });
 
     res.json({
       error: 0,
-      error_msg: '',
+      error_msg: 'Contest created',
     });
   } catch (err) {
     next(err);
@@ -19,32 +30,22 @@ const createContest = async (req: Request, res: Response, next: NextFunction): P
 
 const readContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { offset, limit, where = {}, order_by = [], has_total = false } = req.body as RequestBodySchema;
+    const {
+      offset,
+      limit,
+      where = {},
+      order_by = [],
+      has_total = false,
+    } = assertWithSchema(req.body, readContestParamsSchema);
 
     await knex.transaction(async (trx) => {
-      const query = trx('Contests');
-      if (Array.isArray(where)) {
-        for (const value of where) {
-          if (typeof value === 'string') {
-            query.whereRaw(value, []);
-          } else if (Array.isArray(value) && value.length === 3) {
-            query.where(value[0], value[1], value[2]);
-          } else {
-            throw new LogicError({ ...ERRORS.BAD_REQUEST });
-          }
-        }
-      } else if (typeof where === 'object' && where !== null) {
-        query.where(where);
-      } else {
-        throw new LogicError({ ...ERRORS.BAD_REQUEST });
-      }
-
+      const query = applyWhere(trx('Contests'), where);
       const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by);
       const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
       res.json({
         error: 0,
-        error_msg: req.method === 'GET' ? 'GET is unsafe, use POST instead' : '',
+        error_msg: req.method === 'GET' ? 'GET is unsafe, use POST instead' : 'Contests',
         data: {
           total: total,
           items,
@@ -58,12 +59,17 @@ const readContest = async (req: Request, res: Response, next: NextFunction): Pro
 
 const updateContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { where, values } = req.body as RequestBodySchema;
-    await knex('Contests').where(where).update(values);
+    const { where, values } = assertWithSchema(req.body, updateContestParamsSchema);
+    const { start_time } = values;
+    const query = applyWhere(knex('Contests'), where);
+    await query.update({
+      ...values,
+      start_time: start_time != null ? timestampToDate(start_time) : undefined,
+    });
 
     res.json({
       error: 0,
-      error_msg: '',
+      error_msg: 'Contest updated',
     });
   } catch (err) {
     next(err);
@@ -72,12 +78,13 @@ const updateContest = async (req: Request, res: Response, next: NextFunction): P
 
 const deleteContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { where } = req.body as RequestBodySchema;
-    await knex('Contests').where(where).del();
+    const { where } = assertWithSchema(req.body, deleteContestParamsSchema);
+    const query = applyWhere(knex('Contests'), where);
+    await query.del();
 
     res.json({
       error: 0,
-      error_msg: '',
+      error_msg: 'Contest deleted',
     });
   } catch (err) {
     next(err);
