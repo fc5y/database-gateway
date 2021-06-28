@@ -3,7 +3,7 @@ import { JSONSchemaType } from 'ajv';
 export interface createContestParams {
   values: {
     contest_name: string;
-    start_time: number | Date;
+    start_time: number;
     duration: number;
     contest_title: string;
     can_enter: boolean;
@@ -68,7 +68,7 @@ export interface updateContestParams {
   where: Record<string, unknown> | Array<string | [any, any, any]>;
   values: {
     contest_name?: string;
-    start_time?: number | Date;
+    start_time?: number;
     duration?: number;
     contest_title?: string;
     can_enter?: boolean;

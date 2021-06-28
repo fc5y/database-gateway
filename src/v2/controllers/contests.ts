@@ -42,12 +42,11 @@ const makeWhereQuery = (trx: any, where: Record<string, unknown> | Array<string 
 const createContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { values } = assertWithSchema(req.body, createContestParamsSchema);
-
-    if ('start_time' in values) {
-      values.start_time = timestampToDate(values.start_time as number);
-    }
-
-    await knex('Contests').insert(values);
+    const { start_time } = values;
+    await knex('Contests').insert({
+      ...values,
+      start_time: start_time != null ? timestampToDate(start_time) : undefined,
+    });
 
     res.json({
       error: 0,
@@ -90,13 +89,12 @@ const readContest = async (req: Request, res: Response, next: NextFunction): Pro
 const updateContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = assertWithSchema(req.body, updateContestParamsSchema);
-
-    if ('start_time' in values) {
-      values.start_time = timestampToDate(values.start_time as number);
-    }
-
+    const { start_time } = values;
     const query = makeWhereQuery(knex, where);
-    await query.update(values);
+    await query.update({
+      ...values,
+      start_time: start_time != null ? timestampToDate(start_time) : undefined,
+    });
 
     res.json({
       error: 0,

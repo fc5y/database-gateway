@@ -42,12 +42,11 @@ const makeWhereQuery = (trx: any, where: Record<string, unknown> | Array<string 
 const createEmailVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { values } = assertWithSchema(req.body, createEmailVerificationParamsSchema);
-
-    if ('expired_time' in values) {
-      values.expired_time = timestampToDate(values.expired_time as number);
-    }
-
-    await knex('EmailVerifications').insert(values);
+    const { expired_time } = values;
+    await knex('EmailVerifications').insert({
+      ...values,
+      expired_time: expired_time != null ? timestampToDate(expired_time) : undefined,
+    });
 
     res.json({
       error: 0,
@@ -90,13 +89,12 @@ const readEmailVerification = async (req: Request, res: Response, next: NextFunc
 const updateEmailVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = assertWithSchema(req.body, updateEmailVerificationParamsSchema);
-
-    if ('expired_time' in values) {
-      values.expired_time = timestampToDate(values.expired_time as number);
-    }
-
+    const { expired_time } = values;
     const query = makeWhereQuery(knex, where);
-    await query.update(values);
+    await query.update({
+      ...values,
+      expired_time: expired_time != null ? timestampToDate(expired_time) : undefined,
+    });
 
     res.json({
       error: 0,

@@ -4,7 +4,7 @@ export interface createEmailVerificationParams {
   values: {
     email: string;
     otp: string;
-    expired_time: number | Date;
+    expired_time: number;
   };
 }
 
@@ -63,7 +63,7 @@ export interface updateEmailVerificationParams {
   values: {
     email?: string;
     otp?: string;
-    expired_time?: number | Date;
+    expired_time?: number;
   };
 }
 
