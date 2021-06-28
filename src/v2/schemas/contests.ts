@@ -1,4 +1,5 @@
 import { JSONSchemaType } from 'ajv';
+import { CustomWhere } from './common';
 
 export interface createContestParams {
   values: {
@@ -37,7 +38,7 @@ export interface readContestParams {
   limit: number;
   has_total?: boolean;
   order_by?: Array<string>;
-  where?: Record<string, unknown> | Array<string | [any, any, any]>;
+  where?: CustomWhere;
 }
 
 const readContestParamsSchema: JSONSchemaType<readContestParams> = {
@@ -65,7 +66,7 @@ const readContestParamsSchema: JSONSchemaType<readContestParams> = {
 } as any;
 
 export interface updateContestParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
   values: {
     contest_name?: string;
     start_time?: number;
@@ -109,7 +110,7 @@ const updateContestParamsSchema: JSONSchemaType<updateContestParams> = {
 } as any;
 
 export interface deleteContestParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
 }
 
 const deleteContestParamsSchema: JSONSchemaType<deleteContestParams> = {

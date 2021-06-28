@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ERROR_CODE, GeneralError } from '../errors';
+import { applyWhere } from './common';
 import { assertWithSchema } from '../validation';
 import {
   createEmailVerificationParamsSchema,
@@ -9,35 +9,6 @@ import {
 } from '../schemas/emailVerifications';
 import knex from '../../db';
 import { timestampToDate } from '../../utils';
-
-const makeWhereQuery = (trx: any, where: Record<string, unknown> | Array<string | [any, any, any]>) => {
-  const query = trx('EmailVerifications');
-  if (Array.isArray(where)) {
-    for (const value of where) {
-      if (typeof value === 'string') {
-        query.whereRaw(value, []);
-      } else if (Array.isArray(value) && value.length === 3) {
-        query.where(value[0], value[1], value[2]);
-      } else {
-        throw new GeneralError({
-          error: ERROR_CODE.BAD_WHERE_CLAUSE,
-          error_msg: "where's elements must be a string or an array of length 3",
-          data: null,
-        });
-      }
-    }
-  } else if (typeof where === 'object' && where !== null) {
-    query.where(where);
-  } else {
-    throw new GeneralError({
-      error: ERROR_CODE.BAD_WHERE_CLAUSE,
-      error_msg: 'where must be an array or an object',
-      data: null,
-    });
-  }
-
-  return query;
-};
 
 const createEmailVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -68,7 +39,7 @@ const readEmailVerification = async (req: Request, res: Response, next: NextFunc
     } = assertWithSchema(req.body, readEmailVerificationParamsSchema);
 
     await knex.transaction(async (trx) => {
-      const query = makeWhereQuery(trx, where);
+      const query = applyWhere(trx('EmailVerifications'), where);
       const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by);
       const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
@@ -90,7 +61,7 @@ const updateEmailVerification = async (req: Request, res: Response, next: NextFu
   try {
     const { where, values } = assertWithSchema(req.body, updateEmailVerificationParamsSchema);
     const { expired_time } = values;
-    const query = makeWhereQuery(knex, where);
+    const query = applyWhere(knex('EmailVerifications'), where);
     await query.update({
       ...values,
       expired_time: expired_time != null ? timestampToDate(expired_time) : undefined,
@@ -108,7 +79,7 @@ const updateEmailVerification = async (req: Request, res: Response, next: NextFu
 const deleteEmailVerification = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where } = assertWithSchema(req.body, deleteEmailVerificationParamsSchema);
-    const query = makeWhereQuery(knex, where);
+    const query = applyWhere(knex('EmailVerifications'), where);
     await query.del();
 
     res.json({

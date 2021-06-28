@@ -1,4 +1,5 @@
 import { JSONSchemaType } from 'ajv';
+import { CustomWhere } from './common';
 
 export interface createEmailVerificationParams {
   values: {
@@ -31,7 +32,7 @@ export interface readEmailVerificationParams {
   limit: number;
   has_total?: boolean;
   order_by?: Array<string>;
-  where?: Record<string, unknown> | Array<string | [any, any, any]>;
+  where?: CustomWhere;
 }
 
 const readEmailVerificationParamsSchema: JSONSchemaType<readEmailVerificationParams> = {
@@ -59,7 +60,7 @@ const readEmailVerificationParamsSchema: JSONSchemaType<readEmailVerificationPar
 } as any;
 
 export interface updateEmailVerificationParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
   values: {
     email?: string;
     otp?: string;
@@ -97,7 +98,7 @@ const updateEmailVerificationParamsSchema: JSONSchemaType<updateEmailVerificatio
 } as any;
 
 export interface deleteEmailVerificationParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
 }
 
 const deleteEmailVerificationParamsSchema: JSONSchemaType<deleteEmailVerificationParams> = {

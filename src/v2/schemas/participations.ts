@@ -1,4 +1,5 @@
 import { JSONSchemaType } from 'ajv';
+import { CustomWhere } from './common';
 
 export interface createParticipationParams {
   values: {
@@ -53,7 +54,7 @@ export interface readParticipationParams {
   limit: number;
   has_total?: boolean;
   order_by?: Array<string>;
-  where?: Record<string, unknown> | Array<string | [any, any, any]>;
+  where?: CustomWhere;
 }
 
 const readParticipationParamsSchema: JSONSchemaType<readParticipationParams> = {
@@ -81,7 +82,7 @@ const readParticipationParamsSchema: JSONSchemaType<readParticipationParams> = {
 } as any;
 
 export interface updateParticipationParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
   values: {
     user_id?: number;
     contest_id?: number;
@@ -131,7 +132,7 @@ const updateParticipationParamsSchema: JSONSchemaType<updateParticipationParams>
 } as any;
 
 export interface deleteParticipationParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
 }
 
 const deleteParticipationParamsSchema: JSONSchemaType<deleteParticipationParams> = {

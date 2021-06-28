@@ -1,4 +1,5 @@
 import { JSONSchemaType } from 'ajv';
+import { CustomWhere } from './common';
 
 export interface createUserParams {
   values: {
@@ -37,7 +38,7 @@ export interface readUserParams {
   limit: number;
   has_total?: boolean;
   order_by?: Array<string>;
-  where?: Record<string, unknown> | Array<string | [any, any, any]>;
+  where?: CustomWhere;
 }
 
 const readUserParamsSchema: JSONSchemaType<readUserParams> = {
@@ -65,7 +66,7 @@ const readUserParamsSchema: JSONSchemaType<readUserParams> = {
 } as any;
 
 export interface updateUserParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
   values: {
     username?: string;
     full_name?: string;
@@ -109,7 +110,7 @@ const updateUserParamsSchema: JSONSchemaType<updateUserParams> = {
 } as any;
 
 export interface deleteUserParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
 }
 
 const deleteUserParamsSchema: JSONSchemaType<deleteUserParams> = {

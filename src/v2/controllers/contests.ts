@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ERROR_CODE, GeneralError } from '../errors';
+import { applyWhere } from './common';
 import { assertWithSchema } from '../validation';
 import {
   createContestParamsSchema,
@@ -9,35 +9,6 @@ import {
 } from '../schemas/contests';
 import knex from '../../db';
 import { timestampToDate } from '../../utils';
-
-const makeWhereQuery = (trx: any, where: Record<string, unknown> | Array<string | [any, any, any]>) => {
-  const query = trx('Contests');
-  if (Array.isArray(where)) {
-    for (const value of where) {
-      if (typeof value === 'string') {
-        query.whereRaw(value, []);
-      } else if (Array.isArray(value) && value.length === 3) {
-        query.where(value[0], value[1], value[2]);
-      } else {
-        throw new GeneralError({
-          error: ERROR_CODE.BAD_WHERE_CLAUSE,
-          error_msg: "where's elements must be a string or an array of length 3",
-          data: null,
-        });
-      }
-    }
-  } else if (typeof where === 'object' && where !== null) {
-    query.where(where);
-  } else {
-    throw new GeneralError({
-      error: ERROR_CODE.BAD_WHERE_CLAUSE,
-      error_msg: 'where must be an array or an object',
-      data: null,
-    });
-  }
-
-  return query;
-};
 
 const createContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -68,7 +39,7 @@ const readContest = async (req: Request, res: Response, next: NextFunction): Pro
     } = assertWithSchema(req.body, readContestParamsSchema);
 
     await knex.transaction(async (trx) => {
-      const query = makeWhereQuery(trx, where);
+      const query = applyWhere(trx('Contests'), where);
       const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by);
       const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
@@ -90,7 +61,7 @@ const updateContest = async (req: Request, res: Response, next: NextFunction): P
   try {
     const { where, values } = assertWithSchema(req.body, updateContestParamsSchema);
     const { start_time } = values;
-    const query = makeWhereQuery(knex, where);
+    const query = applyWhere(knex('Contests'), where);
     await query.update({
       ...values,
       start_time: start_time != null ? timestampToDate(start_time) : undefined,
@@ -108,7 +79,7 @@ const updateContest = async (req: Request, res: Response, next: NextFunction): P
 const deleteContest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where } = assertWithSchema(req.body, deleteContestParamsSchema);
-    const query = makeWhereQuery(knex, where);
+    const query = applyWhere(knex('Contests'), where);
     await query.del();
 
     res.json({

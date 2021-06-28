@@ -1,4 +1,5 @@
 import { JSONSchemaType } from 'ajv';
+import { CustomWhere } from './common';
 
 export interface createAnnouncementParams {
   values: {
@@ -31,7 +32,7 @@ export interface readAnnouncementParams {
   limit: number;
   has_total?: boolean;
   order_by?: Array<string>;
-  where?: Record<string, unknown> | Array<string | [any, any, any]>;
+  where?: CustomWhere;
 }
 
 const readAnnouncementParamsSchema: JSONSchemaType<readAnnouncementParams> = {
@@ -59,7 +60,7 @@ const readAnnouncementParamsSchema: JSONSchemaType<readAnnouncementParams> = {
 } as any;
 
 export interface updateAnnouncementParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
   values: {
     announcement_name?: string;
     announcement_title?: string;
@@ -97,7 +98,7 @@ const updateAnnouncementParamsSchema: JSONSchemaType<updateAnnouncementParams> =
 } as any;
 
 export interface deleteAnnouncementParams {
-  where: Record<string, unknown> | Array<string | [any, any, any]>;
+  where: CustomWhere;
 }
 
 const deleteAnnouncementParamsSchema: JSONSchemaType<deleteAnnouncementParams> = {

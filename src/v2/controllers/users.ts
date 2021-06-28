@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ERROR_CODE, GeneralError } from '../errors';
+import { applyWhere } from './common';
 import { assertWithSchema } from '../validation';
 import {
   createUserParamsSchema,
@@ -8,35 +8,6 @@ import {
   deleteUserParamsSchema,
 } from '../schemas/users';
 import knex from '../../db';
-
-const makeWhereQuery = (trx: any, where: Record<string, unknown> | Array<string | [any, any, any]>) => {
-  const query = trx('Users');
-  if (Array.isArray(where)) {
-    for (const value of where) {
-      if (typeof value === 'string') {
-        query.whereRaw(value, []);
-      } else if (Array.isArray(value) && value.length === 3) {
-        query.where(value[0], value[1], value[2]);
-      } else {
-        throw new GeneralError({
-          error: ERROR_CODE.BAD_WHERE_CLAUSE,
-          error_msg: "where's elements must be a string or an array of length 3",
-          data: null,
-        });
-      }
-    }
-  } else if (typeof where === 'object' && where !== null) {
-    query.where(where);
-  } else {
-    throw new GeneralError({
-      error: ERROR_CODE.BAD_WHERE_CLAUSE,
-      error_msg: 'where must be an array or an object',
-      data: null,
-    });
-  }
-
-  return query;
-};
 
 const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -63,7 +34,7 @@ const readUser = async (req: Request, res: Response, next: NextFunction): Promis
     } = assertWithSchema(req.body, readUserParamsSchema);
 
     await knex.transaction(async (trx) => {
-      const query = makeWhereQuery(trx, where);
+      const query = applyWhere(trx('Users'), where);
       const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by);
       const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
@@ -84,7 +55,7 @@ const readUser = async (req: Request, res: Response, next: NextFunction): Promis
 const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where, values } = assertWithSchema(req.body, updateUserParamsSchema);
-    const query = makeWhereQuery(knex, where);
+    const query = applyWhere(knex('Users'), where);
     await query.update(values);
 
     res.json({
@@ -99,7 +70,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction): Prom
 const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { where } = assertWithSchema(req.body, deleteUserParamsSchema);
-    const query = makeWhereQuery(knex, where);
+    const query = applyWhere(knex('Users'), where);
     await query.del();
 
     res.json({
