@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { CustomWhere } from './common';
+import { CustomWhere, customWhereSchema } from './common';
 
 export interface createEmailVerificationParams {
   values: {
@@ -24,7 +24,6 @@ const createEmailVerificationParamsSchema: JSONSchemaType<createEmailVerificatio
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 };
 
 export interface readEmailVerificationParams {
@@ -43,20 +42,8 @@ const readEmailVerificationParamsSchema: JSONSchemaType<readEmailVerificationPar
     limit: { type: 'integer' },
     has_total: { type: 'boolean', nullable: true },
     order_by: { type: 'array', nullable: true, items: { type: 'string' } },
-    where: {
-      type: ['object', 'array'],
-      nullable: true,
-      required: [],
-      items: {
-        type: ['string', 'array'],
-        items: [{}, {}, {}],
-        minLength: 1,
-        minItems: 3,
-        maxItems: 3,
-      },
-    },
+    where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export interface updateEmailVerificationParams {
@@ -72,17 +59,7 @@ const updateEmailVerificationParamsSchema: JSONSchemaType<updateEmailVerificatio
   type: 'object',
   required: ['values', 'where'],
   properties: {
-    where: {
-      type: ['object', 'array'],
-      required: [],
-      items: {
-        type: ['string', 'array'],
-        items: [{}, {}, {}],
-        minLength: 1,
-        minItems: 3,
-        maxItems: 3,
-      },
-    },
+    where: customWhereSchema,
     values: {
       type: 'object',
       required: [],
@@ -94,7 +71,6 @@ const updateEmailVerificationParamsSchema: JSONSchemaType<updateEmailVerificatio
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 } as any;
 
 export interface deleteEmailVerificationParams {
@@ -105,19 +81,8 @@ const deleteEmailVerificationParamsSchema: JSONSchemaType<deleteEmailVerificatio
   type: 'object',
   required: ['where'],
   properties: {
-    where: {
-      type: ['object', 'array'],
-      required: [],
-      items: {
-        type: ['string', 'array'],
-        items: [{}, {}, {}],
-        minLength: 1,
-        minItems: 3,
-        maxItems: 3,
-      },
-    },
+    where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export {
