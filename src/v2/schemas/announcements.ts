@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { CustomWhere, customWhereSchema } from './common';
+import { WhereClause, OrderByClause, whereClauseSchema, orderByClauseSchema } from './common';
 
 export interface createAnnouncementParams {
   values: {
@@ -30,8 +30,8 @@ export interface readAnnouncementParams {
   offset: number;
   limit: number;
   has_total?: boolean;
-  order_by?: Array<string>;
-  where?: CustomWhere;
+  order_by?: OrderByClause;
+  where?: WhereClause;
 }
 
 const readAnnouncementParamsSchema: JSONSchemaType<readAnnouncementParams> = {
@@ -41,13 +41,13 @@ const readAnnouncementParamsSchema: JSONSchemaType<readAnnouncementParams> = {
     offset: { type: 'integer' },
     limit: { type: 'integer' },
     has_total: { type: 'boolean', nullable: true },
-    order_by: { type: 'array', nullable: true, items: { type: 'string' } },
-    where: customWhereSchema,
+    order_by: orderByClauseSchema,
+    where: whereClauseSchema,
   },
 } as any;
 
 export interface updateAnnouncementParams {
-  where: CustomWhere;
+  where: WhereClause;
   values: {
     announcement_name?: string;
     announcement_title?: string;
@@ -59,7 +59,7 @@ const updateAnnouncementParamsSchema: JSONSchemaType<updateAnnouncementParams> =
   type: 'object',
   required: ['values', 'where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
     values: {
       type: 'object',
       required: [],
@@ -74,14 +74,14 @@ const updateAnnouncementParamsSchema: JSONSchemaType<updateAnnouncementParams> =
 } as any;
 
 export interface deleteAnnouncementParams {
-  where: CustomWhere;
+  where: WhereClause;
 }
 
 const deleteAnnouncementParamsSchema: JSONSchemaType<deleteAnnouncementParams> = {
   type: 'object',
   required: ['where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
   },
 } as any;
 

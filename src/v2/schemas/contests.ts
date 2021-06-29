@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { CustomWhere, customWhereSchema } from './common';
+import { WhereClause, OrderByClause, whereClauseSchema, orderByClauseSchema } from './common';
 
 export interface createContestParams {
   values: {
@@ -36,8 +36,8 @@ export interface readContestParams {
   offset: number;
   limit: number;
   has_total?: boolean;
-  order_by?: Array<string>;
-  where?: CustomWhere;
+  order_by?: OrderByClause;
+  where?: WhereClause;
 }
 
 const readContestParamsSchema: JSONSchemaType<readContestParams> = {
@@ -47,13 +47,13 @@ const readContestParamsSchema: JSONSchemaType<readContestParams> = {
     offset: { type: 'integer' },
     limit: { type: 'integer' },
     has_total: { type: 'boolean', nullable: true },
-    order_by: { type: 'array', nullable: true, items: { type: 'string' } },
-    where: customWhereSchema,
+    order_by: orderByClauseSchema,
+    where: whereClauseSchema,
   },
 } as any;
 
 export interface updateContestParams {
-  where: CustomWhere;
+  where: WhereClause;
   values: {
     contest_name?: string;
     start_time?: number;
@@ -68,7 +68,7 @@ const updateContestParamsSchema: JSONSchemaType<updateContestParams> = {
   type: 'object',
   required: ['values', 'where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
     values: {
       type: 'object',
       required: [],
@@ -86,14 +86,14 @@ const updateContestParamsSchema: JSONSchemaType<updateContestParams> = {
 } as any;
 
 export interface deleteContestParams {
-  where: CustomWhere;
+  where: WhereClause;
 }
 
 const deleteContestParamsSchema: JSONSchemaType<deleteContestParams> = {
   type: 'object',
   required: ['where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
   },
 } as any;
 

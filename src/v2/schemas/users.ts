@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { CustomWhere, customWhereSchema } from './common';
+import { WhereClause, OrderByClause, whereClauseSchema, orderByClauseSchema } from './common';
 
 export interface createUserParams {
   values: {
@@ -36,8 +36,8 @@ export interface readUserParams {
   offset: number;
   limit: number;
   has_total?: boolean;
-  order_by?: Array<string>;
-  where?: CustomWhere;
+  order_by?: OrderByClause;
+  where?: WhereClause;
 }
 
 const readUserParamsSchema: JSONSchemaType<readUserParams> = {
@@ -47,13 +47,13 @@ const readUserParamsSchema: JSONSchemaType<readUserParams> = {
     offset: { type: 'integer' },
     limit: { type: 'integer' },
     has_total: { type: 'boolean', nullable: true },
-    order_by: { type: 'array', nullable: true, items: { type: 'string' } },
-    where: customWhereSchema,
+    order_by: orderByClauseSchema,
+    where: whereClauseSchema,
   },
 } as any;
 
 export interface updateUserParams {
-  where: CustomWhere;
+  where: WhereClause;
   values: {
     username?: string;
     full_name?: string;
@@ -68,7 +68,7 @@ const updateUserParamsSchema: JSONSchemaType<updateUserParams> = {
   type: 'object',
   required: ['values', 'where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
     values: {
       type: 'object',
       required: [],
@@ -86,14 +86,14 @@ const updateUserParamsSchema: JSONSchemaType<updateUserParams> = {
 } as any;
 
 export interface deleteUserParams {
-  where: CustomWhere;
+  where: WhereClause;
 }
 
 const deleteUserParamsSchema: JSONSchemaType<deleteUserParams> = {
   type: 'object',
   required: ['where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
   },
 } as any;
 

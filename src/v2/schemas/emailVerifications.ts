@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { CustomWhere, customWhereSchema } from './common';
+import { WhereClause, OrderByClause, whereClauseSchema, orderByClauseSchema } from './common';
 
 export interface createEmailVerificationParams {
   values: {
@@ -30,8 +30,8 @@ export interface readEmailVerificationParams {
   offset: number;
   limit: number;
   has_total?: boolean;
-  order_by?: Array<string>;
-  where?: CustomWhere;
+  order_by?: OrderByClause;
+  where?: WhereClause;
 }
 
 const readEmailVerificationParamsSchema: JSONSchemaType<readEmailVerificationParams> = {
@@ -41,13 +41,13 @@ const readEmailVerificationParamsSchema: JSONSchemaType<readEmailVerificationPar
     offset: { type: 'integer' },
     limit: { type: 'integer' },
     has_total: { type: 'boolean', nullable: true },
-    order_by: { type: 'array', nullable: true, items: { type: 'string' } },
-    where: customWhereSchema,
+    order_by: orderByClauseSchema,
+    where: whereClauseSchema,
   },
 } as any;
 
 export interface updateEmailVerificationParams {
-  where: CustomWhere;
+  where: WhereClause;
   values: {
     email?: string;
     otp?: string;
@@ -59,7 +59,7 @@ const updateEmailVerificationParamsSchema: JSONSchemaType<updateEmailVerificatio
   type: 'object',
   required: ['values', 'where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
     values: {
       type: 'object',
       required: [],
@@ -74,14 +74,14 @@ const updateEmailVerificationParamsSchema: JSONSchemaType<updateEmailVerificatio
 } as any;
 
 export interface deleteEmailVerificationParams {
-  where: CustomWhere;
+  where: WhereClause;
 }
 
 const deleteEmailVerificationParamsSchema: JSONSchemaType<deleteEmailVerificationParams> = {
   type: 'object',
   required: ['where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
   },
 } as any;
 

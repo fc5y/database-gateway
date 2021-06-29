@@ -1,8 +1,8 @@
 import { Knex } from 'knex/types/index';
 import { ERROR_CODE, GeneralError } from '../errors';
-import { CustomWhere } from '../schemas/common';
+import { WhereClause, OrderByClause } from '../schemas/common';
 
-export function applyWhere(query: Knex.QueryBuilder, where: CustomWhere): Knex.QueryBuilder {
+export function applyWhere(query: Knex.QueryBuilder, where: WhereClause): Knex.QueryBuilder {
   if (Array.isArray(where)) {
     for (const value of where) {
       if (typeof value === 'string') {
@@ -12,7 +12,7 @@ export function applyWhere(query: Knex.QueryBuilder, where: CustomWhere): Knex.Q
       } else {
         throw new GeneralError({
           error: ERROR_CODE.BAD_WHERE_CLAUSE,
-          error_msg: "where's elements must be a string or an array of length 3",
+          error_msg: "where's element must be a string or an array of length 3",
           data: null,
         });
       }
@@ -25,6 +25,31 @@ export function applyWhere(query: Knex.QueryBuilder, where: CustomWhere): Knex.Q
       error_msg: 'where must be an array or an object',
       data: null,
     });
+  }
+
+  return query;
+}
+
+export function applyOrderBy(query: Knex.QueryBuilder, order_by: OrderByClause): Knex.QueryBuilder {
+  if (!Array.isArray(order_by)) {
+    throw new GeneralError({
+      error: ERROR_CODE.BAD_ORDER_BY_CLAUSE,
+      error_msg: 'order_by must be an array',
+      data: null,
+    });
+  }
+  for (const value of order_by) {
+    if (typeof value === 'string') {
+      query.orderBy(value);
+    } else if (typeof value === 'object' && value !== null && 'column' in value && 'order' in value) {
+      query.orderBy(value.column, value.order);
+    } else {
+      throw new GeneralError({
+        error: ERROR_CODE.BAD_ORDER_BY_CLAUSE,
+        error_msg: "order_by's element must be a string or an object with properties column and order",
+        data: null,
+      });
+    }
   }
 
   return query;

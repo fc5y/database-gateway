@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { CustomWhere, customWhereSchema } from './common';
+import { WhereClause, OrderByClause, whereClauseSchema, orderByClauseSchema } from './common';
 
 export interface createParticipationParams {
   values: {
@@ -52,8 +52,8 @@ export interface readParticipationParams {
   offset: number;
   limit: number;
   has_total?: boolean;
-  order_by?: Array<string>;
-  where?: CustomWhere;
+  order_by?: OrderByClause;
+  where?: WhereClause;
 }
 
 const readParticipationParamsSchema: JSONSchemaType<readParticipationParams> = {
@@ -63,13 +63,13 @@ const readParticipationParamsSchema: JSONSchemaType<readParticipationParams> = {
     offset: { type: 'integer' },
     limit: { type: 'integer' },
     has_total: { type: 'boolean', nullable: true },
-    order_by: { type: 'array', nullable: true, items: { type: 'string' } },
-    where: customWhereSchema,
+    order_by: orderByClauseSchema,
+    where: whereClauseSchema,
   },
 } as any;
 
 export interface updateParticipationParams {
-  where: CustomWhere;
+  where: WhereClause;
   values: {
     user_id?: number;
     contest_id?: number;
@@ -87,7 +87,7 @@ const updateParticipationParamsSchema: JSONSchemaType<updateParticipationParams>
   type: 'object',
   required: ['values', 'where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
     values: {
       type: 'object',
       required: [],
@@ -108,14 +108,14 @@ const updateParticipationParamsSchema: JSONSchemaType<updateParticipationParams>
 } as any;
 
 export interface deleteParticipationParams {
-  where: CustomWhere;
+  where: WhereClause;
 }
 
 const deleteParticipationParamsSchema: JSONSchemaType<deleteParticipationParams> = {
   type: 'object',
   required: ['where'],
   properties: {
-    where: customWhereSchema,
+    where: whereClauseSchema,
   },
 } as any;
 

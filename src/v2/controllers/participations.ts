@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { applyWhere } from './common';
+import { applyWhere, applyOrderBy } from './common';
 import { assertWithSchema } from '../validation';
 import {
   createParticipationParamsSchema,
@@ -35,7 +35,7 @@ const readParticipation = async (req: Request, res: Response, next: NextFunction
 
     await knex.transaction(async (trx) => {
       const query = applyWhere(trx('Participations'), where);
-      const items = await query.clone().select('*').offset(offset).limit(limit).orderBy(order_by);
+      const items = await applyOrderBy(query.clone().select('*').offset(offset).limit(limit), order_by);
       const total = has_total ? (await query.clone().count('*', { as: 'count' }).first())?.count : undefined;
 
       res.json({
