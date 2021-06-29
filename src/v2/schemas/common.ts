@@ -1,8 +1,9 @@
 import { JSONSchemaType } from 'ajv';
 
-export type CustomWhere = Record<string, unknown> | Array<string | [any, any, any]>;
+export type WhereClause = Record<string, unknown> | Array<string | [any, any, any]>;
+export type OrderByClause = Array<string | { column: string; order: 'asc' | 'desc' }>;
 
-const customWhereSchema: JSONSchemaType<CustomWhere> = {
+const whereClauseSchema: JSONSchemaType<WhereClause> = {
   anyOf: [
     {
       type: 'object',
@@ -28,4 +29,25 @@ const customWhereSchema: JSONSchemaType<CustomWhere> = {
   ],
 } as any;
 
-export { customWhereSchema };
+const orderByClauseSchema: JSONSchemaType<OrderByClause> = {
+  type: 'array',
+  items: {
+    anyOf: [
+      {
+        type: 'string',
+        minLength: 1,
+      },
+      {
+        type: 'object',
+        required: ['column', 'order'],
+        properties: {
+          column: { type: 'string', minLength: 1 },
+          order: { type: 'string', enum: ['asc', 'desc'] },
+        },
+        additionalProperties: false,
+      },
+    ],
+  },
+};
+
+export { whereClauseSchema, orderByClauseSchema };
