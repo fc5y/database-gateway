@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { CustomWhere } from './common';
+import { CustomWhere, customWhereSchema } from './common';
 
 export interface createParticipationParams {
   values: {
@@ -65,18 +65,7 @@ const readParticipationParamsSchema: JSONSchemaType<readParticipationParams> = {
     limit: { type: 'integer' },
     has_total: { type: 'boolean', nullable: true },
     order_by: { type: 'array', nullable: true, items: { type: 'string' } },
-    where: {
-      type: ['object', 'array'],
-      nullable: true,
-      required: [],
-      items: {
-        type: ['string', 'array'],
-        items: [{}, {}, {}],
-        minLength: 1,
-        minItems: 3,
-        maxItems: 3,
-      },
-    },
+    where: customWhereSchema,
   },
   additionalProperties: false,
 } as any;
@@ -100,17 +89,7 @@ const updateParticipationParamsSchema: JSONSchemaType<updateParticipationParams>
   type: 'object',
   required: ['values', 'where'],
   properties: {
-    where: {
-      type: ['object', 'array'],
-      required: [],
-      items: {
-        type: ['string', 'array'],
-        items: [{}, {}, {}],
-        minLength: 1,
-        minItems: 3,
-        maxItems: 3,
-      },
-    },
+    where: customWhereSchema,
     values: {
       type: 'object',
       required: [],
@@ -139,17 +118,7 @@ const deleteParticipationParamsSchema: JSONSchemaType<deleteParticipationParams>
   type: 'object',
   required: ['where'],
   properties: {
-    where: {
-      type: ['object', 'array'],
-      required: [],
-      items: {
-        type: ['string', 'array'],
-        items: [{}, {}, {}],
-        minLength: 1,
-        minItems: 3,
-        maxItems: 3,
-      },
-    },
+    where: customWhereSchema,
   },
   additionalProperties: false,
 } as any;
