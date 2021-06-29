@@ -46,7 +46,6 @@ const createParticipationParamsSchema: JSONSchemaType<createParticipationParams>
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 };
 
 export interface readParticipationParams {
@@ -67,7 +66,6 @@ const readParticipationParamsSchema: JSONSchemaType<readParticipationParams> = {
     order_by: { type: 'array', nullable: true, items: { type: 'string' } },
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export interface updateParticipationParams {
@@ -107,7 +105,6 @@ const updateParticipationParamsSchema: JSONSchemaType<updateParticipationParams>
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 } as any;
 
 export interface deleteParticipationParams {
@@ -120,7 +117,6 @@ const deleteParticipationParamsSchema: JSONSchemaType<deleteParticipationParams>
   properties: {
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export {

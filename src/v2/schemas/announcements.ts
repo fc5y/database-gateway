@@ -24,7 +24,6 @@ const createAnnouncementParamsSchema: JSONSchemaType<createAnnouncementParams> =
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 };
 
 export interface readAnnouncementParams {
@@ -45,7 +44,6 @@ const readAnnouncementParamsSchema: JSONSchemaType<readAnnouncementParams> = {
     order_by: { type: 'array', nullable: true, items: { type: 'string' } },
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export interface updateAnnouncementParams {
@@ -73,7 +71,6 @@ const updateAnnouncementParamsSchema: JSONSchemaType<updateAnnouncementParams> =
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 } as any;
 
 export interface deleteAnnouncementParams {
@@ -86,7 +83,6 @@ const deleteAnnouncementParamsSchema: JSONSchemaType<deleteAnnouncementParams> =
   properties: {
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export {

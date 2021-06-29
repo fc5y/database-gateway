@@ -30,7 +30,6 @@ const createContestParamsSchema: JSONSchemaType<createContestParams> = {
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 };
 
 export interface readContestParams {
@@ -51,7 +50,6 @@ const readContestParamsSchema: JSONSchemaType<readContestParams> = {
     order_by: { type: 'array', nullable: true, items: { type: 'string' } },
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export interface updateContestParams {
@@ -85,7 +83,6 @@ const updateContestParamsSchema: JSONSchemaType<updateContestParams> = {
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 } as any;
 
 export interface deleteContestParams {
@@ -98,7 +95,6 @@ const deleteContestParamsSchema: JSONSchemaType<deleteContestParams> = {
   properties: {
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export { createContestParamsSchema, readContestParamsSchema, updateContestParamsSchema, deleteContestParamsSchema };

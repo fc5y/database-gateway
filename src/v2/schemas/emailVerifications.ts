@@ -24,7 +24,6 @@ const createEmailVerificationParamsSchema: JSONSchemaType<createEmailVerificatio
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 };
 
 export interface readEmailVerificationParams {
@@ -45,7 +44,6 @@ const readEmailVerificationParamsSchema: JSONSchemaType<readEmailVerificationPar
     order_by: { type: 'array', nullable: true, items: { type: 'string' } },
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export interface updateEmailVerificationParams {
@@ -73,7 +71,6 @@ const updateEmailVerificationParamsSchema: JSONSchemaType<updateEmailVerificatio
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 } as any;
 
 export interface deleteEmailVerificationParams {
@@ -86,7 +83,6 @@ const deleteEmailVerificationParamsSchema: JSONSchemaType<deleteEmailVerificatio
   properties: {
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export {

@@ -30,7 +30,6 @@ const createUserParamsSchema: JSONSchemaType<createUserParams> = {
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 };
 
 export interface readUserParams {
@@ -51,7 +50,6 @@ const readUserParamsSchema: JSONSchemaType<readUserParams> = {
     order_by: { type: 'array', nullable: true, items: { type: 'string' } },
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export interface updateUserParams {
@@ -85,7 +83,6 @@ const updateUserParamsSchema: JSONSchemaType<updateUserParams> = {
       additionalProperties: false,
     },
   },
-  additionalProperties: false,
 } as any;
 
 export interface deleteUserParams {
@@ -98,7 +95,6 @@ const deleteUserParamsSchema: JSONSchemaType<deleteUserParams> = {
   properties: {
     where: customWhereSchema,
   },
-  additionalProperties: false,
 } as any;
 
 export { createUserParamsSchema, readUserParamsSchema, updateUserParamsSchema, deleteUserParamsSchema };
