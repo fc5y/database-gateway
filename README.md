@@ -21,3 +21,7 @@ Run `npm run prettier-format`
 ## Run latest migrations
 
 Run `npm run migrate`
+
+## Run all tests
+
+Run `npm test` (or `npx jest --verbose` for more details)
