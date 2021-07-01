@@ -44,8 +44,8 @@ const readContestParamsSchema: JSONSchemaType<readContestParams> = {
   type: 'object',
   required: ['offset', 'limit'],
   properties: {
-    offset: { type: 'integer' },
-    limit: { type: 'integer' },
+    offset: { type: 'integer', minimum: 0 },
+    limit: { type: 'integer', minimum: 0 },
     has_total: { type: 'boolean', nullable: true },
     order_by: orderByClauseSchema,
     where: whereClauseSchema,
