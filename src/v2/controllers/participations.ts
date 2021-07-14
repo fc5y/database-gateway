@@ -56,11 +56,12 @@ const updateParticipation = async (req: Request, res: Response, next: NextFuncti
   try {
     const { where, values } = assertWithSchema(req.body, updateParticipationParamsSchema);
     const query = applyWhere(knex('Participations'), where);
-    await query.update(values);
+    const affected_rows = await query.update(values);
 
     res.json({
       error: 0,
       error_msg: 'Participation updated',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);
@@ -71,11 +72,12 @@ const deleteParticipation = async (req: Request, res: Response, next: NextFuncti
   try {
     const { where } = assertWithSchema(req.body, deleteParticipationParamsSchema);
     const query = applyWhere(knex('Participations'), where);
-    await query.del();
+    const affected_rows = await query.del();
 
     res.json({
       error: 0,
       error_msg: 'Participation deleted',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);

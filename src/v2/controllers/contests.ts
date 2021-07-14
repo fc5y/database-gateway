@@ -62,7 +62,7 @@ const updateContest = async (req: Request, res: Response, next: NextFunction): P
     const { where, values } = assertWithSchema(req.body, updateContestParamsSchema);
     const { start_time } = values;
     const query = applyWhere(knex('Contests'), where);
-    await query.update({
+    const affected_rows = await query.update({
       ...values,
       start_time: start_time != null ? timestampToDate(start_time) : undefined,
     });
@@ -70,6 +70,7 @@ const updateContest = async (req: Request, res: Response, next: NextFunction): P
     res.json({
       error: 0,
       error_msg: 'Contest updated',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);
@@ -80,11 +81,12 @@ const deleteContest = async (req: Request, res: Response, next: NextFunction): P
   try {
     const { where } = assertWithSchema(req.body, deleteContestParamsSchema);
     const query = applyWhere(knex('Contests'), where);
-    await query.del();
+    const affected_rows = await query.del();
 
     res.json({
       error: 0,
       error_msg: 'Contest deleted',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);

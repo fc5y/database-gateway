@@ -62,7 +62,7 @@ const updateEmailVerification = async (req: Request, res: Response, next: NextFu
     const { where, values } = assertWithSchema(req.body, updateEmailVerificationParamsSchema);
     const { expired_time } = values;
     const query = applyWhere(knex('EmailVerifications'), where);
-    await query.update({
+    const affected_rows = await query.update({
       ...values,
       expired_time: expired_time != null ? timestampToDate(expired_time) : undefined,
     });
@@ -70,6 +70,7 @@ const updateEmailVerification = async (req: Request, res: Response, next: NextFu
     res.json({
       error: 0,
       error_msg: 'EmailVerification updated',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);
@@ -80,11 +81,12 @@ const deleteEmailVerification = async (req: Request, res: Response, next: NextFu
   try {
     const { where } = assertWithSchema(req.body, deleteEmailVerificationParamsSchema);
     const query = applyWhere(knex('EmailVerifications'), where);
-    await query.del();
+    const affected_rows = await query.del();
 
     res.json({
       error: 0,
       error_msg: 'EmailVerification deleted',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);
