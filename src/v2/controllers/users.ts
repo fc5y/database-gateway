@@ -56,11 +56,12 @@ const updateUser = async (req: Request, res: Response, next: NextFunction): Prom
   try {
     const { where, values } = assertWithSchema(req.body, updateUserParamsSchema);
     const query = applyWhere(knex('Users'), where);
-    await query.update(values);
+    const affected_rows = await query.update(values);
 
     res.json({
       error: 0,
       error_msg: 'User updated',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);
@@ -71,11 +72,12 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction): Prom
   try {
     const { where } = assertWithSchema(req.body, deleteUserParamsSchema);
     const query = applyWhere(knex('Users'), where);
-    await query.del();
+    const affected_rows = await query.del();
 
     res.json({
       error: 0,
       error_msg: 'User deleted',
+      data: { affected_rows },
     });
   } catch (err) {
     next(err);
