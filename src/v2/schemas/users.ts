@@ -8,7 +8,7 @@ export interface createUserParams {
     email: string;
     school_name: string;
     password: string;
-    avatar: string;
+    avatar: string | null;
   };
 }
 
@@ -18,14 +18,14 @@ const createUserParamsSchema: JSONSchemaType<createUserParams> = {
   properties: {
     values: {
       type: 'object',
-      required: ['username', 'full_name', 'email', 'school_name', 'password', 'avatar'],
+      required: ['username', 'full_name', 'email', 'school_name', 'password'],
       properties: {
         username: { type: 'string' },
         full_name: { type: 'string' },
         email: { type: 'string' },
         school_name: { type: 'string' },
         password: { type: 'string' },
-        avatar: { type: 'string' },
+        avatar: { type: 'string', nullable: true },
       },
       additionalProperties: false,
     },
