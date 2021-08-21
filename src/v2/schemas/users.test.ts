@@ -38,7 +38,17 @@ describe('createUserParamsSchema', () => {
   });
 
   it('should pass for valid request', () => {
-    const req_body = {
+    const req_body_no_avatar = {
+      values: {
+        username: 'freecontest',
+        full_name: 'Free Contest',
+        email: 'support@freecontest.net',
+        school_name: '',
+        password: '123456',
+      },
+    };
+
+    const req_body_all = {
       values: {
         username: 'freecontest',
         full_name: 'Free Contest',
@@ -49,7 +59,8 @@ describe('createUserParamsSchema', () => {
       },
     };
 
-    expect(() => assertWithSchema(req_body, createUserParamsSchema)).not.toThrow();
+    expect(() => assertWithSchema(req_body_no_avatar, createUserParamsSchema)).not.toThrow();
+    expect(() => assertWithSchema(req_body_all, createUserParamsSchema)).not.toThrow();
   });
 });
 
